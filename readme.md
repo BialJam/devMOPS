@@ -1,12 +1,6 @@
 # Phaser ES6 Boilerplate
 
-This is a non-professional Phaser template for building standard games using the 
-Phaser framework and ES6/2015.
 
-The original idea was to create a small project that contained a robust gulpfile, 
-a basic example and *some* kind of folder structure.
-
-Codepen example: http://codepen.io/belohlavek/full/aORJVL
 
 ## Features
 
@@ -66,20 +60,6 @@ If you modify the contents of other files, please manually restart the server.
 
 See [gulpfile.md](https://github.com/belohlavek/phaser-es6-boilerplate/blob/master/gulpfile.md)
 
-## Changelog (1.0.2)
-
-* Faster builds (no need to copy static files every time).
-* Live reload now works with static files too!
-
-## Contributing
-
-Please report any bugs or add requests on [Github Issues](https://github.com/belohlavek/phaser-es6-boilerplate/issues).
-
-## About me
-
-My name is Daniel Belohlavek: I'm from Buenos Aires, Argentina and I love to derp around and code
-silly snippets. You can follow me on Twitter [@dbhvk](http://twitter.com/dbhvk)
-
 ## License
 
-This project is released under the MIT License.
+This project is released under the CC - Creative Commons License
