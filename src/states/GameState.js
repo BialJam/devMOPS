@@ -2,6 +2,7 @@
 
 import RainbowText from 'objects/RainbowText';
 import MoveableObject from 'objects/MoveableObject';
+import DraggableItem from 'objects/DraggableItem';
 
 class GameState extends Phaser.State {
 
@@ -29,10 +30,16 @@ class GameState extends Phaser.State {
     this.createToolbox();
   }
 
-  update() {
-    this._text.x++;
-    this._text.y--;
-  }
+    createToolbox() {
+        const toolboxItem = new DraggableItem(this.game, 0, 0);
+        this.game.add.existing(toolboxItem);
+        this.item = toolboxItem;
+    }
+
+    update() {
+        this._text.x++;
+        this._text.y--;
+    }
 
 	onDragStart(item, pointer){
 		console.log(pointer.x);
