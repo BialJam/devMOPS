@@ -1,6 +1,5 @@
 /* jshint esversion: 6 */
 
-import RainbowText from 'objects/RainbowText';
 import MoveableObject from 'objects/MoveableObject';
 import DraggableItem from 'objects/DraggableItem';
 
@@ -12,10 +11,8 @@ class GameState extends Phaser.State {
         this.game.load.spritesheet('moveableObject', 'assets/spritesheet.png', 40, 40, 10);
     }
 
-    create() {
-        let center = {x: this.game.world.centerX, y: this.game.world.centerY};
-        this._text = new RainbowText(this.game, center.x, center.y, "- phaser -\nwith a sprinkle of\nES6 dust!");
-        this._text.anchor.set(0.5);
+  create() {
+    let center = { x: this.game.world.centerX, y: this.game.world.centerY };
 
         this.createToolbox();
 
@@ -31,9 +28,18 @@ class GameState extends Phaser.State {
     }
 
     update() {
-        this._text.x++;
-        this._text.y--;
     }
+
+
+  createToolbox() {
+      const toolboxItem = this.game.add.sprite(0, 0, 'item');
+      toolboxItem.inputEnabled = true;
+      toolboxItem.input.enableDrag();
+      toolboxItem.events.onDragStart.add(this.onDragStart, this);
+      toolboxItem.events.onDragStop.add(this.onDragStop, this);
+
+      this.item = toolboxItem;
+  }
 
 }
 
