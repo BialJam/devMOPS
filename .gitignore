@@ -2,3 +2,13 @@ node_modules
 build
 *.log
 *.tmp
+.idea/.name
+.idea/devMops.iml
+.idea/encodings.xml
+.idea/jsLibraryMappings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/watcherTasks.xml
+.idea/workspace.xml
+.idea/libraries/devMops_node_modules.xml
