@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 import GameState from 'states/GameState';
 
 class Game extends Phaser.Game {

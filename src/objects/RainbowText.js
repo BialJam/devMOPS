@@ -1,3 +1,5 @@
+/* jshint esversion: 6 */
+
 class RainbowText extends Phaser.Text {
 
 	constructor(game, x, y, text) {
