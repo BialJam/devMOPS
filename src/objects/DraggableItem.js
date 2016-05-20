@@ -1,7 +1,4 @@
-/**
- * Created by bartek on 20/05/16.
- */
-
+/* jshint esversion: 6 */
 
 class DraggableItem extends Phaser.Sprite {
     constructor(game, x, y) {
@@ -14,6 +11,7 @@ class DraggableItem extends Phaser.Sprite {
         const body = this.body;
         body.collideWorldBounds = true;
         body.immovable = true;
+        body.setCircle();
     }
 
 }
