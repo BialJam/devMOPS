@@ -29,7 +29,6 @@ class GameState extends Phaser.State {
 
     update() {
     }
-    
 
 }
 
