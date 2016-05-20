@@ -25,6 +25,8 @@ class GameState extends Phaser.State {
 	  this.item.input.enableDrag();
 	  this.item.events.onDragStart.add(this.onDragStart, this);
 	  this.item.events.onDragStop.add(this.onDragStop, this);
+
+    this.createToolbox();
   }
 
   update() {
@@ -39,6 +41,17 @@ class GameState extends Phaser.State {
 	onDragStop(item, pointer){
 		console.log(pointer.x);
 	}
+
+  createToolbox() {
+      const toolboxItem = this.game.add.sprite(0, 0, 'item');
+      toolboxItem.inputEnabled = true;
+      toolboxItem.input.enableDrag();
+      toolboxItem.events.onDragStart.add(this.onDragStart, this);
+      toolboxItem.events.onDragStop.add(this.onDragStop, this);
+
+      this.item = toolboxItem;
+  }
+
 }
 
 export default GameState;
