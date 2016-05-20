@@ -29,17 +29,7 @@ class GameState extends Phaser.State {
 
     update() {
     }
-
-
-  createToolbox() {
-      const toolboxItem = this.game.add.sprite(0, 0, 'item');
-      toolboxItem.inputEnabled = true;
-      toolboxItem.input.enableDrag();
-      toolboxItem.events.onDragStart.add(this.onDragStart, this);
-      toolboxItem.events.onDragStop.add(this.onDragStop, this);
-
-      this.item = toolboxItem;
-  }
+    
 
 }
 
