@@ -9,8 +9,10 @@ class DraggableItem extends Phaser.Sprite {
 
         this.inputEnabled = true;
         this.input.enableDrag();
-        this.game.physics.enable(this);
-        this.body.worldBounde = new Phaser.Point(1, 1);
+        game.physics.enable(this);
+
+        const body = this.body;
+        body.collideWorldBounds = true;
     }
 
 }
