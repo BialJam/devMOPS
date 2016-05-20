@@ -8,6 +8,8 @@ class MoveableObject extends Phaser.Sprite {
     this.body.mass = 100;
     this.body.velocity = new Phaser.Point(10, 1);
     this.body.worldBounce = new Phaser.Point(10, 1);
+    this.animations.add('walk');
+    this.animations.play('walk', 10, true);
   }
 
 }
