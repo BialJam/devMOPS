@@ -8,7 +8,7 @@ class GameState extends Phaser.State {
     preload() {
         this.game.load.image('background', 'assets/background.png');
         this.game.load.image('item', 'assets/item.png');
-        this.game.load.spritesheet('moveableObject', 'assets/spritesheet.png', 40, 40, 10);
+        this.game.load.spritesheet('moveableObject', 'assets/spritesheet.png', 45, 45, 10);
     }
 
   create() {
