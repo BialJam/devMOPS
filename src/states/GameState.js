@@ -16,9 +16,9 @@ class GameState extends Phaser.State {
 
         this.createToolbox();
 
-        let object = new MoveableObject(this.game, center.x, center.y);
-        this.game.add.existing(object);
-        this.game.physics.enable(object);
+        this.moveableObject = new MoveableObject(this.game, center.x, center.y);
+        this.game.add.existing(this.moveableObject);
+        this.game.physics.enable(this.moveableObject);
     }
 
     createToolbox() {
@@ -28,6 +28,7 @@ class GameState extends Phaser.State {
     }
 
     update() {
+      this.game.physics.arcade.collide(this.item, this.moveableObject);
     }
 
 }

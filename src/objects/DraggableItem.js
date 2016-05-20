@@ -13,6 +13,7 @@ class DraggableItem extends Phaser.Sprite {
 
         const body = this.body;
         body.collideWorldBounds = true;
+        body.immovable = true;
     }
 
 }
