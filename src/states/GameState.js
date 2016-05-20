@@ -5,14 +5,14 @@ import DraggableItem from 'objects/DraggableItem';
 
 class GameState extends Phaser.State {
 
-    preload() {
-        this.game.load.image('background', 'assets/background.png');
-        this.game.load.image('item', 'assets/item.png');
-        this.game.load.spritesheet('moveableObject', 'assets/spritesheet.png', 45, 45, 10);
-    }
+  preload() {
+      this.game.load.image('background', 'assets/background.png');
+      this.game.load.image('item', 'assets/item.png');
+      this.game.load.spritesheet('moveableObject', 'assets/spritesheet.png', 45, 45, 10);
+  }
 
   create() {
-    let center = { x: this.game.world.centerX, y: this.game.world.centerY };
+    const center = getCenter(this.game.world);
 
         this.createToolbox();
 
@@ -22,15 +22,19 @@ class GameState extends Phaser.State {
     }
 
     createToolbox() {
-        const toolboxItem = new DraggableItem(this.game, 0, 0);
-        this.game.add.existing(toolboxItem);
-        this.item = toolboxItem;
+      const center = getCenter(this.game.world);
+      const toolboxItem = new DraggableItem(this.game, center.x + 100, center.y);
+      this.game.add.existing(toolboxItem);
+      this.item = toolboxItem;
     }
 
     update() {
       this.game.physics.arcade.collide(this.item, this.moveableObject);
     }
+}
 
+function getCenter ({centerX, centerY}) {
+  return { x: centerX, y: centerY };
 }
 
 export default GameState;
