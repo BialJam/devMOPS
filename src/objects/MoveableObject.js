@@ -11,6 +11,8 @@ class MoveableObject extends Sprite {
     body.velocity = new Point(10, 1);
     body.collideWorldBounds = true;
     body.worldBounce = new Point(1, 1);
+    this.animations.add('walk');
+    this.animations.play('walk', 10, true);
   }
 
 }
