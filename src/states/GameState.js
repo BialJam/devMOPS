@@ -16,11 +16,7 @@ class GameState extends Phaser.State {
 
     let object = new MoveableObject(this.game, center.x, center.y);
     this.game.add.existing(object);
-  }
-
-  update() {
-    this._text.x++;
-    this._text.y--;
+    this.game.physics.enable(object);
   }
 }
 
