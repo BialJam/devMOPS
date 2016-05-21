@@ -19,6 +19,9 @@ class GameState extends Phaser.State {
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.setImpactEvents(true);
     game.physics.p2.restitution = 0.8;
+    game.physics.p2.gravity.y = 0;
+    game.physics.p2.gravity.x = 0;
+
     var mainCollisionGroup = this.game.physics.p2.createCollisionGroup();
     var secondCollisionGroup = this.game.physics.p2.createCollisionGroup();
     game.physics.p2.updateBoundsCollisionGroup();
@@ -30,7 +33,7 @@ class GameState extends Phaser.State {
 
 
     game.add.existing(this.item);
-    const generator = new Generator('a', game, 0, 0, mainCollisionGroup, secondCollisionGroup);
+    const generator = new Generator('a', game, 250, 250, mainCollisionGroup, secondCollisionGroup);
 
 
     this.item.enablePhysics();

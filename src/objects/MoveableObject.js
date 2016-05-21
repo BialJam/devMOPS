@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-const { Sprite, Point } = Phaser;
+const { Sprite } = Phaser;
 
 class MoveableObject extends Sprite {
 
@@ -8,33 +8,34 @@ class MoveableObject extends Sprite {
     this._collisionGroup = collisionGroup;
   }
 
-    // const body = this.body;
   enablePhysics() {
     this.game.physics.p2.enable(this, true);
     const body = this.body;
 
-    //body.setCircle(20, 20);
+    body.setCircle(0, 0);
     body.setCollisionGroup(this._collisionGroup);
     body.setZeroDamping();
-    body.fixedRotation = true;
+    body.fixedRotation = false;
     enableAnimation(this);
+    body.velocity.x = -100;
+    body.velocity.y = 0;
   }
 
   update() {
-    //this.body.force.x = 100;
-    var angle = 0;
     const body = this.body;
-    const speed =20;
-  //  body.rotation = this.game.math.degToRad(angle);  // correct angle of angry bullets (depends on the sprite used)
-  //  body.force.x = Math.cos(angle) * speed;    // accelerateToObject
-  //  body.force.y = Math.sin(angle) * speed;
+    body.damping = 0;
+    body.angularDamping = 0;
+
+    var angle = Math.atan2(body.velocity.y, body.velocity.x);
+    body.angle = angle * 180 / Math.PI;
+    body.angle += 180;
+
   }
 }
-
 function enableAnimation(obj) {
-    const animations = obj.animations;
-    animations.add('walk');
-    animations.play('walk', 10, true);
+  const animations = obj.animations;
+  animations.add('walk');
+  animations.play('walk', 10, true);
 }
 
 export default MoveableObject;

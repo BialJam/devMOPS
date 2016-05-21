@@ -16,7 +16,7 @@ class Generator {
 
   start() {
     let count = 0;
-    const total = 5;
+    const total = 1;
 
     let interval = window.setInterval(()=> {
       if (count < total) {
