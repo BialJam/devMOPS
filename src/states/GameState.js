@@ -17,9 +17,16 @@ class GameState extends Phaser.State {
   }
 
   create() {
-    const logic = new GameLogic();
     const game = this.game;
     const center = getCenter(game.world);
+    const textStyle = { font: "65px Arial", fill: "#ff0044", align: "center" };
+    const logic = new GameLogic(function () {
+      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 33, "You WIN!", textStyle);
+      console.log('win!');
+    }, function () {
+      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 33, "You LOOSE!", textStyle);
+      console.log('loose!');
+    });
     // Physics enabled
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.setImpactEvents(true);
@@ -53,7 +60,6 @@ class GameState extends Phaser.State {
     game.input.addMoveCallback(this.move, this);
 
     generator.start();
-
   }
 
 
