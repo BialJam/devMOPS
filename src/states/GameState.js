@@ -51,29 +51,15 @@ class GameState extends Phaser.State {
 
 
   onDown(pointer) {
-    const game = this.game;
-    var bodies = game.physics.p2.hitTest(pointer.position);
+    this.item.onDown(pointer, this.mouseBody);
+  }
 
-    // p2 uses different coordinate system, so convert the pointer position to p2's coordinate system
-    var physicsPos = [game.physics.p2.pxmi(pointer.position.x), game.physics.p2.pxmi(pointer.position.y)];
-    if (bodies.length && bodies[0].parent.sprite.draggable) {
-      var clickedBody = bodies[0];
-      this.clickedBody = clickedBody.parent;
-      this.clickedBody.mass = 1;
-      //this.clickedBody.clearCollision();
-      // clickedBody.setZeroDamping();
+  onUp() {
+    this.item.onUp();
+  }
 
-      //if (!clickedBody.parent.sprite.draggable) {
-      //  return;
-      //}
-
-      var localPointInBody = [0, 0];
-      // this function takes physicsPos and coverts it to the body's local coordinate system
-      clickedBody.toLocalFrame(localPointInBody, physicsPos);
-
-      // use a revoluteContraint to attach mouseBody to the clicked body
-      this.mouseConstraint = game.physics.p2.createLockConstraint(this.mouseBody, clickedBody);
-    }
+  move(pointer) {
+    this.item.move(pointer, this.mouseBody);
   }
 
   createToolbox(collisionGroup) {
@@ -81,19 +67,6 @@ class GameState extends Phaser.State {
     return new DraggableItem(this.game, center.x + 100, center.y, collisionGroup);
   }
 
-  onUp() {
-    if (typeof this.clickedBody !== 'undefined') {
-      this.clickedBody.mass = 99999;
-      this.clickedBody.setZeroVelocity();
-      this.clickedBody.setZeroRotation();
-      this.game.physics.p2.removeConstraint(this.mouseConstraint);
-    }
-  }
-
-  move(pointer) {
-    this.mouseBody.position[0] = this.game.physics.p2.pxmi(pointer.position.x);
-    this.mouseBody.position[1] = this.game.physics.p2.pxmi(pointer.position.y);
-  }
 
 }
 
