@@ -3,11 +3,12 @@ const { Sprite } = Phaser;
 
 class MoveableObject extends Sprite {
 
-  constructor(game, x, y, collisionGroup, team) {
+  constructor(game, x, y, collisionGroup, team, initialRotation = 0) {
     super(game, x, y, 'moveableObject');
     this._collisionGroup = collisionGroup;
     this._team = team;
     this.touched = false;
+    this.initialRotation = initialRotation;
   }
 
   enablePhysics() {
@@ -20,11 +21,19 @@ class MoveableObject extends Sprite {
     body.fixedRotation = false;
     this.angle = 0;
     enableAnimation(this);
-    body.velocity.x = -100;
-    body.velocity.y = 0;
+
+    const speed = 100;
+    const initialRotation = this.initialRotation;
+    body.velocity.x = speed * Math.sin(this.toRadians(initialRotation));
+    body.velocity.y = - speed * Math.cos(this.toRadians(initialRotation));
+
     this.scale.setTo(0.5);
 
     body.collides(this._collisionGroup, this.objectApproached);
+  }
+
+  toRadians(angle) {
+    return angle * (Math.PI / 180);
   }
 
   update() {
