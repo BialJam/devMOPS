@@ -14,6 +14,7 @@ class Meta extends Sprite {
     const body = this.body;
     body.setCollisionGroup(this._collisionGroup);
     body.collides(this._collisionGroup, this.objectApproached);
+    body.static = true;
   }
 
   update() {
