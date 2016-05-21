@@ -14,7 +14,7 @@ class MoveableObject extends Sprite {
     this.game.physics.p2.enable(this, true);
     const body = this.body;
 
-    body.setCircle(40);
+    body.setCircle(20);
     body.setCollisionGroup(this._collisionGroup);
     body.setZeroDamping();
     body.fixedRotation = false;
@@ -22,6 +22,7 @@ class MoveableObject extends Sprite {
     enableAnimation(this);
     body.velocity.x = -100;
     body.velocity.y = 0;
+    this.scale.setTo(0.5);
   }
 
   update() {
