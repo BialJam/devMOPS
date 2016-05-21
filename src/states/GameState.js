@@ -12,8 +12,13 @@ class GameState extends Phaser.State {
     this.game.load.image('background', 'assets/background.png');
     this.game.load.image('item_rotated', 'assets/belka.png');
     this.game.load.image('moveableObject', 'assets/ludzik.png');
+    this.game.load.image('start_green', 'assets/start_green.png');
+    this.game.load.image('start_red', 'assets/start_red.png');
+
     this.game.load.physics('belka', 'assets/belka.json');
-    this.game.load.spritesheet('meta_yellow', 'assets/meta.png', 32, 32, 1);
+    this.game.load.spritesheet('meta_red', 'assets/meta_red.png');
+    this.game.load.spritesheet('meta_green', 'assets/meta_green.png');
+
   }
 
   create() {
@@ -43,13 +48,13 @@ class GameState extends Phaser.State {
     game.physics.startSystem(Phaser.Physics.P2JS);
 
     this.item = this.createToolbox(secondCollisionGroup);
-    this.meta = new Meta(this.game, center.x, center.y - 100, mainCollisionGroup, 'yellow');
+    this.meta = new Meta(this.game, center.x, center.y - 100, mainCollisionGroup, 'green');
 
     game.add.existing(this.item);
     game.add.existing(this.meta);
 
-    const generator = new Generator('a', game, 250, 250, mainCollisionGroup, secondCollisionGroup, 'yellow', logic);
-    const oppositeGenerator = new Generator('a', game, 150, 250, mainCollisionGroup, secondCollisionGroup, 'red', logic);
+    const generator = new Generator( game, 250, 250, mainCollisionGroup, secondCollisionGroup, 'green', logic, 180);
+    const oppositeGenerator = new Generator( game, 150, 250, mainCollisionGroup, secondCollisionGroup, 'red', logic, 270);
 
     this.item.enablePhysics();
     this.meta.enablePhysics();
