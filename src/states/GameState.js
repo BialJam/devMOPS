@@ -13,7 +13,8 @@ class GameState extends Phaser.State {
     this.game.load.image('background', 'assets/background.png');
     this.game.load.image('item_rotated', 'assets/belka.png');
     this.game.load.image('toolbox', 'assets/toolbox.png');
-    this.game.load.image('moveableObject', 'assets/ludzik.png');
+    this.game.load.image('moveableObject_red', 'assets/ludzik_red.png');
+    this.game.load.image('moveableObject_green', 'assets/ludzik_green.png');
     this.game.load.image('start_green', 'assets/start_green.png');
     this.game.load.image('start_red', 'assets/start_red.png');
 
@@ -52,21 +53,25 @@ class GameState extends Phaser.State {
     game.physics.startSystem(Phaser.Physics.P2JS);
 
     this.item = this.createToolbox(secondCollisionGroup);
-    this.meta = new Meta(this.game, center.x, center.y - 100, mainCollisionGroup, 'green');
+    this.metaGreen = new Meta(this.game, center.x + 200, center.y - 100, mainCollisionGroup, 'green');
+    this.metaRed = new Meta(this.game, center.x, center.y + 100, mainCollisionGroup, 'red');
 
-    var toolbox = new Toolbox(this.game, 250, 450, mainCollisionGroup, toolboxCollisionGroup);
+    var toolbox = new Toolbox(this.game, 400, 560, mainCollisionGroup, toolboxCollisionGroup);
     game.add.existing(toolbox);
     toolbox.enablePhysics();
     game.add.existing(this.item);
-    game.add.existing(this.meta);
+    game.add.existing(this.metaGreen);
+    game.add.existing(this.metaRed);
 
     const generator = new Generator( game, 250, 250, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup, toolboxCollisionGroup], 'green', logic, 180);
     const oppositeGenerator = new Generator( game, 150, 250, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup, toolboxCollisionGroup], 'red', logic, 270);
 
     this.item.enablePhysics();
-    this.meta.enablePhysics();
+    this.metaRed.enablePhysics();
+    this.metaGreen.enablePhysics();
 
-    logic.registerMeta(this.meta);
+    logic.registerMeta(this.metaRed);
+    logic.registerMeta(this.metaGreen);
 
     // Collisions
     this.item.body.collides([mainCollisionGroup, secondCollisionGroup]);
@@ -98,8 +103,6 @@ class GameState extends Phaser.State {
     const center = getCenter(this.game.world);
     return new DraggableItem(this.game, center.x + 100, center.y, collisionGroup, 90);
   }
-
-
 
 }
 

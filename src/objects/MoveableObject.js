@@ -4,7 +4,7 @@ const { Sprite } = Phaser;
 class MoveableObject extends Sprite {
 
   constructor(game, x, y, collisionGroup, team, initialRotation = 0) {
-    super(game, x, y, 'moveableObject');
+    super(game, x, y, 'moveableObject_'+ team);
     this._collisionGroup = collisionGroup;
     this._team = team;
     this.touched = false;
