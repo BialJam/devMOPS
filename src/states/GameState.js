@@ -2,8 +2,7 @@
 
 import MoveableObject from 'objects/MoveableObject';
 import DraggableItem from 'objects/DraggableItem';
-
-
+import Generator from 'object/Generator';
 
 class GameState extends Phaser.State {
 
@@ -29,23 +28,27 @@ class GameState extends Phaser.State {
     this.createToolbox();
 
     this.item = this.createToolbox(secondCollisionGroup);
-    this.moveableObject = new MoveableObject(this.game, center.x, center.y, mainCollisionGroup);
+    //this.moveableObject = new MoveableObject(this.game, center.x, center.y, mainCollisionGroup);
 
-    game.add.existing(this.moveableObject);
+
     game.add.existing(this.item);
 
-    this.moveableObject.enablePhysics();
+
     this.item.enablePhysics();
 
     // Collisions
-    this.item.body.collides([ mainCollisionGroup, secondCollisionGroup ]);
-    this.moveableObject.body.collides([ mainCollisionGroup, secondCollisionGroup ]);
+    this.item.body.collides([mainCollisionGroup, secondCollisionGroup]);
+    //this.moveableObject.body.collides([mainCollisionGroup, secondCollisionGroup]);
 
     this.mouseBody = new p2.Body();
     game.physics.p2.world.addBody(this.mouseBody);
     game.input.onDown.add(this.onDown, this);
     game.input.onUp.add(this.onUp, this);
     game.input.addMoveCallback(this.move, this);
+
+    const generator = new Generator('a', game, 0,0, mainCollisionGroup);
+    generator.start();
+
   }
 
 
@@ -59,12 +62,16 @@ class GameState extends Phaser.State {
     if (bodies.length) {
       var clickedBody = bodies[0];
 
+      if (!clickedBody.parent.sprite.draggable) {
+        return;
+      }
+
       var localPointInBody = [0, 0];
       // this function takes physicsPos and coverts it to the body's local coordinate system
       clickedBody.toLocalFrame(localPointInBody, physicsPos);
 
       // use a revoluteContraint to attach mouseBody to the clicked body
-      this.mouseConstraint = game.physics.p2.createLockConstraint(this.mouseBody,  clickedBody);
+      this.mouseConstraint = game.physics.p2.createLockConstraint(this.mouseBody, clickedBody);
     }
   }
 
