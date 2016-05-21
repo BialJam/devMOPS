@@ -2,7 +2,8 @@
 
 import MoveableObject from 'objects/MoveableObject';
 import DraggableItem from 'objects/DraggableItem';
-
+import Meta from 'objects/Meta';
+import GameLogic from 'logic/GameLogic';
 
 
 class GameState extends Phaser.State {
@@ -12,9 +13,11 @@ class GameState extends Phaser.State {
     this.game.load.image('item_rotated', 'assets/item_rotated.png');
     this.game.load.spritesheet('moveableObject', 'assets/spritesheet.png', 45, 45, 10);
     this.game.load.physics('item_rotated', 'assets/test.json');
+    this.game.load.spritesheet('meta_yellow', 'assets/meta.png', 32, 32, 1);
   }
 
   create() {
+    const logic = new GameLogic();
     const game = this.game;
     // Physics enabled
     game.physics.startSystem(Phaser.Physics.P2JS);
@@ -29,13 +32,19 @@ class GameState extends Phaser.State {
     this.createToolbox();
 
     this.item = this.createToolbox(secondCollisionGroup);
-    this.moveableObject = new MoveableObject(this.game, center.x, center.y, mainCollisionGroup);
+    this.moveableObject = new MoveableObject(this.game, center.x, center.y, mainCollisionGroup, 'yellow');
+    this.meta = new Meta(this.game, center.x, center.y - 100, mainCollisionGroup, 'yellow');
 
     game.add.existing(this.moveableObject);
     game.add.existing(this.item);
+    game.add.existing(this.meta);
 
     this.moveableObject.enablePhysics();
     this.item.enablePhysics();
+    this.meta.enablePhysics();
+
+    logic.registerMeta(this.meta);
+    logic.registerWalker(this.item);
 
     // Collisions
     this.item.body.collides([ mainCollisionGroup, secondCollisionGroup ]);
