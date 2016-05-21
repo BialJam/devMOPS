@@ -3,9 +3,10 @@ const { Sprite } = Phaser;
 
 class MoveableObject extends Sprite {
 
-  constructor(game, x, y, collisionGroup) {
+  constructor(game, x, y, collisionGroup, team) {
     super(game, x, y, 'moveableObject');
     this._collisionGroup = collisionGroup;
+    this._team = team;
   }
 
   enablePhysics() {
@@ -16,6 +17,7 @@ class MoveableObject extends Sprite {
     body.setCollisionGroup(this._collisionGroup);
     body.setZeroDamping();
     body.fixedRotation = false;
+    this.angle = 0;
     enableAnimation(this);
     body.velocity.x = -100;
     body.velocity.y = 0;
@@ -23,13 +25,31 @@ class MoveableObject extends Sprite {
 
   update() {
     const body = this.body;
+
+    if (this._remove) {
+      this.game.physics.p2.getConstraints().filter(e => {
+        return e.bodyA.parent === body || e.bodyB.parent === body;
+      }).forEach(e => {
+        this.game.physics.p2.removeConstraint(e);
+      });
+      this.game.physics.p2.removeBody(body);
+      this.destroy();
+    }
+
     body.damping = 0;
     body.angularDamping = 0;
 
     var angle = Math.atan2(body.velocity.y, body.velocity.x);
     body.angle = angle * 180 / Math.PI;
-    body.angle += 180;
+    body.angle += 90;
+   }
 
+  destroyElement() {
+    this._remove = true;
+  }
+
+  isMyTeam(team) {
+    return this._team === team;
   }
 }
 function enableAnimation(obj) {

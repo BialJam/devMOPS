@@ -1,17 +1,17 @@
-/**
- * Created by bartek on 21/05/16.
- */
+/* jshint esversion: 6 */
 import MoveableObject from 'objects/MoveableObject';
 
 class Generator {
 
-  constructor(type, game, x, y, collisionGroup, secondCollisionGroup) {
+  constructor(type, game, x, y, collisionGroup, secondCollisionGroup, team, gameLogic) {
     this.type = type;
     this.x = x;
     this.y = y;
     this.collisionGroup = collisionGroup;
     this.secondCollisionGroup = secondCollisionGroup;
     this.game = game;
+    this.team = team;
+    this.gameLogic = gameLogic;
   }
 
   start() {
@@ -30,12 +30,12 @@ class Generator {
   }
 
   createPerson() {
-    console.log('test');
     const game = this.game;
-    const item = new MoveableObject(game, this.x, this.y, this.collisionGroup);
+    const item = new MoveableObject(game, this.x, this.y, this.collisionGroup, this.team);
     game.add.existing(item);
     item.enablePhysics();
     item.body.collides([this.collisionGroup, this.secondCollisionGroup]);
+    this.gameLogic.registerWalker(item);
   }
 }
 
