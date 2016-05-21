@@ -1,10 +1,10 @@
 /* jshint esversion: 6 */
 
-import MoveableObject from 'objects/MoveableObject';
 import DraggableItem from 'objects/DraggableItem';
 import Meta from 'objects/Meta';
 import GameLogic from 'logic/GameLogic';
 
+import Generator from 'objects/Generator';
 
 class GameState extends Phaser.State {
 
@@ -19,6 +19,7 @@ class GameState extends Phaser.State {
   create() {
     const logic = new GameLogic();
     const game = this.game;
+    const center = getCenter(game.world);
     // Physics enabled
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.setImpactEvents(true);
@@ -27,19 +28,16 @@ class GameState extends Phaser.State {
     var secondCollisionGroup = this.game.physics.p2.createCollisionGroup();
     game.physics.p2.updateBoundsCollisionGroup();
 
-    const center = getCenter(this.game.world);
     game.physics.startSystem(Phaser.Physics.P2JS);
-    this.createToolbox();
 
     this.item = this.createToolbox(secondCollisionGroup);
-    this.moveableObject = new MoveableObject(this.game, center.x, center.y, mainCollisionGroup, 'yellow');
     this.meta = new Meta(this.game, center.x, center.y - 100, mainCollisionGroup, 'yellow');
 
-    game.add.existing(this.moveableObject);
     game.add.existing(this.item);
     game.add.existing(this.meta);
+    
+    const generator = new Generator('a', game, 0, 0, mainCollisionGroup, secondCollisionGroup, 'yellow', logic);
 
-    this.moveableObject.enablePhysics();
     this.item.enablePhysics();
     this.meta.enablePhysics();
 
@@ -47,34 +45,29 @@ class GameState extends Phaser.State {
     logic.registerWalker(this.item);
 
     // Collisions
-    this.item.body.collides([ mainCollisionGroup, secondCollisionGroup ]);
-    this.moveableObject.body.collides([ mainCollisionGroup, secondCollisionGroup ]);
+    this.item.body.collides([mainCollisionGroup, secondCollisionGroup]);
 
     this.mouseBody = new p2.Body();
     game.physics.p2.world.addBody(this.mouseBody);
     game.input.onDown.add(this.onDown, this);
     game.input.onUp.add(this.onUp, this);
     game.input.addMoveCallback(this.move, this);
+
+    generator.start();
+
   }
 
 
   onDown(pointer) {
-    const game = this.game;
-    var bodies = game.physics.p2.hitTest(pointer.position);
+    this.item.onDown(pointer, this.mouseBody);
+  }
 
-    // p2 uses different coordinate system, so convert the pointer position to p2's coordinate system
-    var physicsPos = [game.physics.p2.pxmi(pointer.position.x), game.physics.p2.pxmi(pointer.position.y)];
+  onUp() {
+    this.item.onUp();
+  }
 
-    if (bodies.length) {
-      var clickedBody = bodies[0];
-
-      var localPointInBody = [0, 0];
-      // this function takes physicsPos and coverts it to the body's local coordinate system
-      clickedBody.toLocalFrame(localPointInBody, physicsPos);
-
-      // use a revoluteContraint to attach mouseBody to the clicked body
-      this.mouseConstraint = game.physics.p2.createLockConstraint(this.mouseBody,  clickedBody);
-    }
+  move(pointer) {
+    this.item.move(pointer, this.mouseBody);
   }
 
   createToolbox(collisionGroup) {
@@ -82,14 +75,6 @@ class GameState extends Phaser.State {
     return new DraggableItem(this.game, center.x + 100, center.y, collisionGroup);
   }
 
-  onUp() {
-    this.game.physics.p2.removeConstraint(this.mouseConstraint);
-  }
-
-  move(pointer) {
-    this.mouseBody.position[0] = this.game.physics.p2.pxmi(pointer.position.x);
-    this.mouseBody.position[1] = this.game.physics.p2.pxmi(pointer.position.y);
-  }
 
 }
 

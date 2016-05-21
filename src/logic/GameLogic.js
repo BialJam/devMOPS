@@ -9,18 +9,21 @@ class GameLogic {
   }
 
   registerMeta(meta) {
+    var self = this;
     meta.win= (meta, walker) => {
-      this._playNum--;
-      this.checkWinning();
+      self._playNum--;
+      self.checkWinning();
       walker.sprite.destroyElement();
+      console.log(self._playNum);
     };
     meta.fail = (meta, walker) => {
-      fail();
+      self.fail();
     };
   }
 
   registerWalker(walker) { 
     this._playNum++;
+    console.log(this._playNum);
   }
 
   checkWinning() {

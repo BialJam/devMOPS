@@ -9,10 +9,14 @@ class MoveableObject extends Sprite {
     this._team = team;
   }
 
+    // const body = this.body;
   enablePhysics() {
     this.game.physics.p2.enable(this, true);
     const body = this.body;
+
     body.setCollisionGroup(this._collisionGroup);
+    body.setZeroDamping();
+    body.fixedRotation = true;
     enableAnimation(this);
   }
 
@@ -27,9 +31,15 @@ class MoveableObject extends Sprite {
       }).forEach(e => {
         this.game.physics.p2.removeConstraint(e);
       });
-      this.game.physics.p2.removeBodyNextStep(body);
+      this.game.physics.p2.removeBody(body);
       this.destroy();
     }
+    //this.body.force.x = 100;
+    var angle = 0;
+    const speed =20;
+    //  body.rotation = this.game.math.degToRad(angle);  // correct angle of angry bullets (depends on the sprite used)
+    //  body.force.x = Math.cos(angle) * speed;    // accelerateToObject
+    //  body.force.y = Math.sin(angle) * speed;
   }
 
   destroyElement() {
