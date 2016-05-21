@@ -2,7 +2,7 @@
 
 class GameLogic {
 
-  constructor(game, win, fail) {
+  constructor(win, fail) {
     this._playNum = 0;
     this._win = win;
     this._fail = fail;
@@ -14,7 +14,6 @@ class GameLogic {
       self._playNum--;
       self.checkWinning();
       walker.sprite.destroyElement();
-      console.log(self._playNum);
     };
     meta.fail = (meta, walker) => {
       self.fail();
@@ -23,12 +22,10 @@ class GameLogic {
 
   registerWalker(walker) { 
     this._playNum++;
-    console.log("adding" + this._playNum);
   }
 
   checkWinning() {
     if (this._playNum === 0) {
-      console.log("WINNER");
       if (this._win) { 
         this._win();
       }
@@ -36,8 +33,8 @@ class GameLogic {
   }
 
   fail() {
-    if (fail) {
-      fail();
+    if (this._fail) {
+      this._fail();
     }
   }
 
