@@ -2,7 +2,7 @@
 
 import MoveableObject from 'objects/MoveableObject';
 import DraggableItem from 'objects/DraggableItem';
-import Generator from 'object/Generator';
+import Generator from 'objects/Generator';
 
 class GameState extends Phaser.State {
 
