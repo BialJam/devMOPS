@@ -11,7 +11,7 @@ class MoveableObject extends Sprite {
   }
 
   enablePhysics() {
-    this.game.physics.p2.enable(this, true);
+    this.game.physics.p2.enable(this, false);
     const body = this.body;
 
     body.setCircle(0, 0);
@@ -22,6 +22,8 @@ class MoveableObject extends Sprite {
     enableAnimation(this);
     body.velocity.x = -100;
     body.velocity.y = 0;
+
+    body.collides(this._collisionGroup, this.objectApproached);
   }
 
   update() {
@@ -59,6 +61,14 @@ class MoveableObject extends Sprite {
     }
     this.touched = true;
     return true;
+  }
+
+  objectApproached(body, nextBody) {
+    const sprite = body.sprite;
+    const secondSprite = nextBody.sprite;
+    if (sprite.meetWrongTeam && secondSprite.isMyTeam && !secondSprite.isMyTeam(body)) {
+      sprite.meetWrongTeam();
+    }
   }
 }
 function enableAnimation(obj) {
