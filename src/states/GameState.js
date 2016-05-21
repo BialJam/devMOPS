@@ -1,9 +1,8 @@
 /* jshint esversion: 6 */
 
-import MoveableObject from 'objects/MoveableObject';
+//import MoveableObject from 'objects/MoveableObject';
 import DraggableItem from 'objects/DraggableItem';
-
-
+import Generator from 'objects/Generator';
 
 class GameState extends Phaser.State {
 
@@ -24,28 +23,30 @@ class GameState extends Phaser.State {
     var secondCollisionGroup = this.game.physics.p2.createCollisionGroup();
     game.physics.p2.updateBoundsCollisionGroup();
 
-    const center = getCenter(this.game.world);
     game.physics.startSystem(Phaser.Physics.P2JS);
-    this.createToolbox(mainCollisionGroup);
 
     this.item = this.createToolbox(secondCollisionGroup);
-    this.moveableObject = new MoveableObject(this.game, center.x, center.y, mainCollisionGroup);
+    //this.moveableObject = new MoveableObject(this.game, center.x, center.y, mainCollisionGroup);
 
-    game.add.existing(this.moveableObject);
+
     game.add.existing(this.item);
+    const generator = new Generator('a', game, 0, 0, mainCollisionGroup, secondCollisionGroup);
 
-    this.moveableObject.enablePhysics();
+
     this.item.enablePhysics();
 
     // Collisions
-    this.item.body.collides([ mainCollisionGroup, secondCollisionGroup ]);
-    this.moveableObject.body.collides([ mainCollisionGroup, secondCollisionGroup ]);
+    this.item.body.collides([mainCollisionGroup, secondCollisionGroup]);
+    //this.moveableObject.body.collides([mainCollisionGroup, secondCollisionGroup]);
 
     this.mouseBody = new p2.Body();
     game.physics.p2.world.addBody(this.mouseBody);
     game.input.onDown.add(this.onDown, this);
     game.input.onUp.add(this.onUp, this);
     game.input.addMoveCallback(this.move, this);
+
+    generator.start();
+
   }
 
 
@@ -59,15 +60,19 @@ class GameState extends Phaser.State {
       var clickedBody = bodies[0];
       this.clickedBody = clickedBody.parent;
       this.clickedBody.mass = 1;
-      this.clickedBody.clearCollision();
+      //this.clickedBody.clearCollision();
       // clickedBody.setZeroDamping();
+
+      //if (!clickedBody.parent.sprite.draggable) {
+      //  return;
+      //}
 
       var localPointInBody = [0, 0];
       // this function takes physicsPos and coverts it to the body's local coordinate system
       clickedBody.toLocalFrame(localPointInBody, physicsPos);
 
       // use a revoluteContraint to attach mouseBody to the clicked body
-      this.mouseConstraint = game.physics.p2.createLockConstraint(this.mouseBody,  clickedBody);
+      this.mouseConstraint = game.physics.p2.createLockConstraint(this.mouseBody, clickedBody);
     }
   }
 
@@ -77,10 +82,12 @@ class GameState extends Phaser.State {
   }
 
   onUp() {
-    this.clickedBody.mass = 99999;
-    this.clickedBody.setZeroVelocity();
-    this.clickedBody.setZeroRotation();
-    this.game.physics.p2.removeConstraint(this.mouseConstraint);
+    if (typeof this.clickedBody !== 'undefined') {
+      this.clickedBody.mass = 99999;
+      this.clickedBody.setZeroVelocity();
+      this.clickedBody.setZeroRotation();
+      this.game.physics.p2.removeConstraint(this.mouseConstraint);
+    }
   }
 
   move(pointer) {
