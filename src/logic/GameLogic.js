@@ -23,11 +23,12 @@ class GameLogic {
 
   registerWalker(walker) { 
     this._playNum++;
-    console.log(this._playNum);
+    console.log("adding" + this._playNum);
   }
 
   checkWinning() {
     if (this._playNum === 0) {
+      console.log("WINNER");
       if (this._win) { 
         this._win();
       }
@@ -35,7 +36,6 @@ class GameLogic {
   }
 
   fail() {
-    console.error("YOU FAIL");
     if (fail) {
       fail();
     }
