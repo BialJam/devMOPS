@@ -32,10 +32,10 @@ class Generator {
   createPerson() {
     const game = this.game;
     const item = new MoveableObject(game, this.x, this.y, this.collisionGroup, this.team);
+    this.gameLogic.registerWalker(item);
     game.add.existing(item);
     item.enablePhysics();
     item.body.collides([this.collisionGroup, this.secondCollisionGroup]);
-    this.gameLogic.registerWalker(item);
   }
 }
 

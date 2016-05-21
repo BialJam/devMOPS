@@ -42,7 +42,6 @@ class GameState extends Phaser.State {
     this.meta.enablePhysics();
 
     logic.registerMeta(this.meta);
-    logic.registerWalker(this.item);
 
     // Collisions
     this.item.body.collides([mainCollisionGroup, secondCollisionGroup]);

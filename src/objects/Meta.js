@@ -19,13 +19,12 @@ class Meta extends Sprite {
   update() {
   }
 
-
-  objectApproached(body, nextBody, equation) {
+  objectApproached(body, nextBody) {
     const team = body.sprite._team;
     if (body && nextBody && nextBody.sprite && nextBody.sprite.isMyTeam) {
       let secondSprite = nextBody.sprite;
       if (secondSprite && secondSprite.isMyTeam && secondSprite.isMyTeam(team)) {
-        if (body.sprite.win) {
+        if (body.sprite.win && secondSprite.markTouched()) {
           body.sprite.win(body, nextBody, team);
         }
       } else {

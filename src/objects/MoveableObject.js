@@ -7,6 +7,7 @@ class MoveableObject extends Sprite {
     super(game, x, y, 'moveableObject');
     this._collisionGroup = collisionGroup;
     this._team = team;
+    this.touched = false;
   }
 
     // const body = this.body;
@@ -48,6 +49,14 @@ class MoveableObject extends Sprite {
 
   isMyTeam(team) {
     return this._team === team;
+  }
+
+  markTouched() {
+    if (this.touched) {
+      return false;
+    }
+    this.touched = true;
+    return true;
   }
 }
 
