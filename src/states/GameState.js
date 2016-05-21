@@ -22,6 +22,7 @@ class GameState extends Phaser.State {
     this.moveableObject = new MoveableObject(this.game, center.x, center.y);
     //this.game.add.existing(this.moveableObject);
 
+
     //this.item.enableCollisions();
 
     const game = this.game;
@@ -38,7 +39,7 @@ class GameState extends Phaser.State {
     var bodies = game.physics.p2.hitTest(pointer.position);
 
     // p2 uses different coordinate system, so convert the pointer position to p2's coordinate system
-    var physicsPos = [game.physics.p2.pxmi(pointer.position.x), this.game.physics.p2.pxmi(pointer.position.y)];
+    var physicsPos = [game.physics.p2.pxmi(pointer.position.x), game.physics.p2.pxmi(pointer.position.y)];
 
     if (bodies.length) {
       var clickedBody = bodies[0];
@@ -48,12 +49,11 @@ class GameState extends Phaser.State {
       clickedBody.toLocalFrame(localPointInBody, physicsPos);
 
       // use a revoluteContraint to attach mouseBody to the clicked body
-      this.mouseConstraint = this.game.physics.p2.createLockConstraint(this.mouseBody,  clickedBody);
-          //[this.game.physics.p2.mpxi(localPointInBody[0]), this.game.physics.p2.mpxi(localPointInBody[1])]);
+      this.mouseConstraint = game.physics.p2.createLockConstraint(this.mouseBody,  clickedBody);
     }
   }
 
-  onUp(pointer) {
+  onUp() {
     this.game.physics.p2.removeConstraint(this.mouseConstraint);
   }
 
@@ -65,11 +65,10 @@ class GameState extends Phaser.State {
   createToolbox() {
     const center = getCenter(this.game.world);
     const toolboxItem = new DraggableItem(this.game, center.x + 100, center.y);
-    this.item = toolboxItem;
+    return
   }
 
   update() {
-    // this.game.physics.arcade.collide(this.item, this.moveableObject);
   }
 }
 
