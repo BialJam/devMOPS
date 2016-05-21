@@ -3,22 +3,28 @@ const { Sprite, Point } = Phaser;
 
 class MoveableObject extends Sprite {
 
-  constructor(game, x, y) {
+  constructor(game, x, y, collisionGroup) {
     super(game, x, y, 'moveableObject');
-    game.physics.enable(this);
-
-    const body = this.body;
-    body.mass = 100;
-    body.velocity = new Point(10, 1);
-    body.collideWorldBounds = true;
-    body.worldBounce = new Point(1, 1);
-    body.bounce.setTo(1,1);
-
-    const animations = this.animations;
-    animations.add('walk');
-    animations.play('walk', 10, true);
+    this._collisionGroup = collisionGroup;
   }
 
+  enablePhysics() {
+    this.game.physics.p2.enable(this, true);
+    const body = this.body;
+    body.setCircle(20, 20);
+    body.setCollisionGroup(this._collisionGroup);
+    enableAnimation(this);
+  }
+
+  update() {
+    this.body.force.x = 100;
+  }
+}
+
+function enableAnimation(obj) {
+    const animations = obj.animations;
+    animations.add('walk');
+    animations.play('walk', 10, true);
 }
 
 export default MoveableObject;

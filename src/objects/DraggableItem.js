@@ -1,17 +1,17 @@
 /* jshint esversion: 6 */
 
 class DraggableItem extends Phaser.Sprite {
-    constructor(game, x, y) {
+    constructor(game, x, y, collisionGroup) {
         super(game, x, y, 'item');
+        this._collisionGroup = collisionGroup;
+    }
 
-        this.inputEnabled = true;
-        this.input.enableDrag();
-        game.physics.enable(this);
+    enablePhysics() {
+        this.game.physics.p2.enable(this, true);
 
         const body = this.body;
-        body.collideWorldBounds = true;
-        body.immovable = true;
-        body.setCircle();
+        body.setRectangle(60, 60);
+        body.setCollisionGroup(this._collisionGroup);
     }
 
 }

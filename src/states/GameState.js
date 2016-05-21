@@ -6,31 +6,41 @@ import DraggableItem from 'objects/DraggableItem';
 class GameState extends Phaser.State {
 
   preload() {
-      this.game.load.image('background', 'assets/background.png');
-      this.game.load.image('item', 'assets/item.png');
-      this.game.load.spritesheet('moveableObject', 'assets/spritesheet.png', 45, 45, 10);
+    this.game.load.image('background', 'assets/background.png');
+    this.game.load.image('item', 'assets/item.png');
+    this.game.load.spritesheet('moveableObject', 'assets/spritesheet.png', 45, 45, 10);
   }
 
   create() {
+    // Physics enabled
+    this.game.physics.startSystem(Phaser.Physics.P2JS);
+    this.game.physics.p2.setImpactEvents(true);
+    this.game.physics.p2.restitution = 0.8;
+    var mainCollisionGroup = this.game.physics.p2.createCollisionGroup();
+    var secondCollisionGroup = this.game.physics.p2.createCollisionGroup();
+    this.game.physics.p2.updateBoundsCollisionGroup();
+
     const center = getCenter(this.game.world);
 
-        this.createToolbox();
+    this.item = this.createToolbox(secondCollisionGroup);
+    this.moveableObject = new MoveableObject(this.game, center.x, center.y, mainCollisionGroup);
 
-        this.moveableObject = new MoveableObject(this.game, center.x, center.y);
-        this.game.add.existing(this.moveableObject);
-        this.game.physics.enable(this.moveableObject);
-    }
+    this.game.add.existing(this.moveableObject);
+    this.game.add.existing(this.item);
 
-    createToolbox() {
-      const center = getCenter(this.game.world);
-      const toolboxItem = new DraggableItem(this.game, center.x + 100, center.y);
-      this.game.add.existing(toolboxItem);
-      this.item = toolboxItem;
-    }
+    this.moveableObject.enablePhysics();
+    this.item.enablePhysics();
 
-    update() {
-      this.game.physics.arcade.collide(this.item, this.moveableObject);
-    }
+    // Collisions
+    this.item.body.collides([ mainCollisionGroup, secondCollisionGroup ]);
+    this.moveableObject.body.collides([ mainCollisionGroup, secondCollisionGroup ]);
+  }
+
+  createToolbox(collisionGroup) {
+    const center = getCenter(this.game.world);
+    return new DraggableItem(this.game, center.x + 100, center.y, collisionGroup);
+  }
+
 }
 
 function getCenter ({centerX, centerY}) {
