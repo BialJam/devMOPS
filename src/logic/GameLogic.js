@@ -9,7 +9,7 @@ class GameLogic {
   }
 
   registerMeta(meta) {
-    var self = this;
+    const self = this;
     meta.win= (meta, walker) => {
       self._playNum--;
       self.checkWinning();
@@ -21,7 +21,11 @@ class GameLogic {
   }
 
   registerWalker(walker) { 
+    const self = this;
     this._playNum++;
+    walker.meetWrongTeam = function () {
+      self.fail();
+    };
   }
 
   checkWinning() {

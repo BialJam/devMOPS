@@ -47,6 +47,7 @@ class GameState extends Phaser.State {
     game.add.existing(this.meta);
 
     const generator = new Generator('a', game, 250, 250, mainCollisionGroup, secondCollisionGroup, 'yellow', logic);
+    const oppositeGenerator = new Generator('a', game, 150, 250, mainCollisionGroup, secondCollisionGroup, 'red', logic);
 
     this.item.enablePhysics();
     this.meta.enablePhysics();
@@ -63,6 +64,7 @@ class GameState extends Phaser.State {
     game.input.addMoveCallback(this.move, this);
 
     generator.start();
+    oppositeGenerator.start();
   }
 
 

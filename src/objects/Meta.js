@@ -10,7 +10,7 @@ class Meta extends Sprite {
   }
 
   enablePhysics() {
-    this.game.physics.p2.enable(this, true);
+    this.game.physics.p2.enable(this, false);
     const body = this.body;
     body.setCollisionGroup(this._collisionGroup);
     body.collides(this._collisionGroup, this.objectApproached);
