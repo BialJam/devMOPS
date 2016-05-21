@@ -56,9 +56,12 @@ class GameState extends Phaser.State {
 
     // p2 uses different coordinate system, so convert the pointer position to p2's coordinate system
     var physicsPos = [game.physics.p2.pxmi(pointer.position.x), game.physics.p2.pxmi(pointer.position.y)];
-
-    if (bodies.length) {
+    if (bodies.length && bodies[0].parent.sprite.draggable) {
       var clickedBody = bodies[0];
+      this.clickedBody = clickedBody.parent;
+      this.clickedBody.mass = 1;
+      this.clickedBody.clearCollision();
+      // clickedBody.setZeroDamping();
 
       if (!clickedBody.parent.sprite.draggable) {
         return;
@@ -79,6 +82,9 @@ class GameState extends Phaser.State {
   }
 
   onUp() {
+    this.clickedBody.mass = 99999;
+    this.clickedBody.setZeroVelocity();
+    this.clickedBody.setZeroRotation();
     this.game.physics.p2.removeConstraint(this.mouseConstraint);
   }
 

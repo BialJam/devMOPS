@@ -8,9 +8,11 @@ class MoveableObject extends Sprite {
     this._collisionGroup = collisionGroup;
   }
 
+    // const body = this.body;
   enablePhysics() {
     this.game.physics.p2.enable(this, true);
     const body = this.body;
+
     body.setCircle(20, 20);
     body.setCollisionGroup(this._collisionGroup);
     enableAnimation(this);
