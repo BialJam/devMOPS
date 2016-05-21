@@ -23,6 +23,7 @@ class GameState extends Phaser.State {
 
   create() {
     const game = this.game;
+    game.stage.backgroundColor = "#3d424c";
     const center = getCenter(game.world);
     const textStyle = { font: "65px Arial", fill: "#ff0044", align: "center" };
     const logic = new GameLogic(function () {
