@@ -76,7 +76,7 @@ class MoveableObject extends Sprite {
   objectApproached(body, nextBody) {
     const sprite = body.sprite;
     const secondSprite = nextBody.sprite;
-    if (sprite.meetWrongTeam && secondSprite.isMyTeam && !secondSprite.isMyTeam(body)) {
+    if (sprite.meetWrongTeam && secondSprite.isMyTeam && !secondSprite.isMyTeam(sprite._team)) {
       sprite.meetWrongTeam();
     }
   }
