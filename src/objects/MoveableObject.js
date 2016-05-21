@@ -13,13 +13,21 @@ class MoveableObject extends Sprite {
     this.game.physics.p2.enable(this, true);
     const body = this.body;
 
-    body.setCircle(20, 20);
+    //body.setCircle(20, 20);
     body.setCollisionGroup(this._collisionGroup);
+    body.setZeroDamping();
+    body.fixedRotation = true;
     enableAnimation(this);
   }
 
   update() {
-    this.body.force.x = 100;
+    //this.body.force.x = 100;
+    var angle = 0;
+    const body = this.body;
+    const speed =20;
+  //  body.rotation = this.game.math.degToRad(angle);  // correct angle of angry bullets (depends on the sprite used)
+  //  body.force.x = Math.cos(angle) * speed;    // accelerateToObject
+  //  body.force.y = Math.sin(angle) * speed;
   }
 }
 
