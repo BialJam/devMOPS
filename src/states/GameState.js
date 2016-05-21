@@ -10,9 +10,9 @@ class GameState extends Phaser.State {
 
   preload() {
     this.game.load.image('background', 'assets/background.png');
-    this.game.load.image('item_rotated', 'assets/item_rotated.png');
+    this.game.load.image('item_rotated', 'assets/belka.png');
     this.game.load.image('moveableObject', 'assets/ludzik.png');
-    this.game.load.physics('item_rotated', 'assets/test.json');
+    this.game.load.physics('belka', 'assets/belka.json');
     this.game.load.spritesheet('meta_yellow', 'assets/meta.png', 32, 32, 1);
   }
 
@@ -74,7 +74,7 @@ class GameState extends Phaser.State {
 
   createToolbox(collisionGroup) {
     const center = getCenter(this.game.world);
-    return new DraggableItem(this.game, center.x + 100, center.y, collisionGroup);
+    return new DraggableItem(this.game, center.x + 100, center.y, collisionGroup, 90);
   }
 
 
