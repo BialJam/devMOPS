@@ -19,13 +19,15 @@ class GameState extends Phaser.State {
   create() {
     const game = this.game;
     const center = getCenter(game.world);
-    const textStyle = { font: "65px Arial", fill: "#ff0044", align: "center" };
+    const textStyle = { font: "65px Arial", fill: "#aabbcc", align: "center" };
     const logic = new GameLogic(function () {
-      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 33, "You WIN!", textStyle);
-      console.log('win!');
+      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "You WIN!", textStyle);
+      game.physics.p2.paused = true;
+      this.success = 'win';
     }, function () {
-      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 33, "You LOOSE!", textStyle);
-      console.log('loose!');
+      game.add.text(getCenter(game.world).x - 190,  getCenter(game.world).y - 40, "You LOOSE!", textStyle);
+      game.physics.p2.paused = true;
+      this.success = 'loose';
     });
     // Physics enabled
     game.physics.startSystem(Phaser.Physics.P2JS);
