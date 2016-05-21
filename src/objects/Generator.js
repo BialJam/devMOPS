@@ -5,11 +5,12 @@ import MoveableObject from 'objects/MoveableObject';
 
 class Generator {
 
-  constructor(type, game, x, y, collisionGroup) {
+  constructor(type, game, x, y, collisionGroup, secondCollisionGroup) {
     this.type = type;
     this.x = x;
     this.y = y;
     this.collisionGroup = collisionGroup;
+    this.secondCollisionGroup = secondCollisionGroup;
     this.game = game;
   }
 
@@ -19,6 +20,8 @@ class Generator {
     const item = new MoveableObject(game, this.x, this.y, this.collisionGroup);
     game.add.existing(item);
     item.enablePhysics();
+    item.body.collides([this.collisionGroup, this.secondCollisionGroup]);
+
   }
 }
 

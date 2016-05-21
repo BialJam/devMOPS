@@ -30,6 +30,7 @@ class GameState extends Phaser.State {
 
 
     game.add.existing(this.item);
+    const generator = new Generator('a', game, 0, 0, mainCollisionGroup, secondCollisionGroup);
 
 
     this.item.enablePhysics();
@@ -44,7 +45,6 @@ class GameState extends Phaser.State {
     game.input.onUp.add(this.onUp, this);
     game.input.addMoveCallback(this.move, this);
 
-    const generator = new Generator('a', game, 0,0, mainCollisionGroup);
     generator.start();
 
   }
@@ -60,12 +60,12 @@ class GameState extends Phaser.State {
       var clickedBody = bodies[0];
       this.clickedBody = clickedBody.parent;
       this.clickedBody.mass = 1;
-      this.clickedBody.clearCollision();
+      //this.clickedBody.clearCollision();
       // clickedBody.setZeroDamping();
 
-      if (!clickedBody.parent.sprite.draggable) {
-        return;
-      }
+      //if (!clickedBody.parent.sprite.draggable) {
+      //  return;
+      //}
 
       var localPointInBody = [0, 0];
       // this function takes physicsPos and coverts it to the body's local coordinate system
@@ -82,10 +82,12 @@ class GameState extends Phaser.State {
   }
 
   onUp() {
-    this.clickedBody.mass = 99999;
-    this.clickedBody.setZeroVelocity();
-    this.clickedBody.setZeroRotation();
-    this.game.physics.p2.removeConstraint(this.mouseConstraint);
+    if (typeof this.clickedBody !== 'undefined') {
+      this.clickedBody.mass = 99999;
+      this.clickedBody.setZeroVelocity();
+      this.clickedBody.setZeroRotation();
+      this.game.physics.p2.removeConstraint(this.mouseConstraint);
+    }
   }
 
   move(pointer) {
