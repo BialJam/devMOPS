@@ -1,7 +1,7 @@
 /**
  * Created by bartek on 21/05/16.
  */
-import MoveableObject from 'MoveableObject';
+import MoveableObject from 'objects/MoveableObject';
 
 class Generator {
 
@@ -22,4 +22,4 @@ class Generator {
   }
 }
 
-export default Generator
+export default Generator;

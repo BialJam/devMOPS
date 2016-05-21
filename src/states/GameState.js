@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
 
-import MoveableObject from 'objects/MoveableObject';
+//import MoveableObject from 'objects/MoveableObject';
 import DraggableItem from 'objects/DraggableItem';
 import Generator from 'objects/Generator';
 
@@ -23,9 +23,7 @@ class GameState extends Phaser.State {
     var secondCollisionGroup = this.game.physics.p2.createCollisionGroup();
     game.physics.p2.updateBoundsCollisionGroup();
 
-    const center = getCenter(this.game.world);
     game.physics.startSystem(Phaser.Physics.P2JS);
-    this.createToolbox();
 
     this.item = this.createToolbox(secondCollisionGroup);
     //this.moveableObject = new MoveableObject(this.game, center.x, center.y, mainCollisionGroup);
