@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-const { Sprite, Point } = Phaser;
+const { Sprite } = Phaser;
 
 class MoveableObject extends Sprite {
 
@@ -10,22 +10,23 @@ class MoveableObject extends Sprite {
     this.touched = false;
   }
 
-    // const body = this.body;
   enablePhysics() {
     this.game.physics.p2.enable(this, true);
     const body = this.body;
 
+    body.setCircle(0, 0);
     body.setCollisionGroup(this._collisionGroup);
     body.setZeroDamping();
-    body.fixedRotation = true;
+    body.fixedRotation = false;
+    this.angle = 0;
     enableAnimation(this);
+    body.velocity.x = -100;
+    body.velocity.y = 0;
   }
 
   update() {
     const body = this.body;
-    if (body) {
-      body.force.x = 100;
-    }
+
     if (this._remove) {
       this.game.physics.p2.getConstraints().filter(e => {
         return e.bodyA.parent === body || e.bodyB.parent === body;
@@ -35,13 +36,14 @@ class MoveableObject extends Sprite {
       this.game.physics.p2.removeBody(body);
       this.destroy();
     }
-    //this.body.force.x = 100;
-    var angle = 0;
-    const speed =20;
-    //  body.rotation = this.game.math.degToRad(angle);  // correct angle of angry bullets (depends on the sprite used)
-    //  body.force.x = Math.cos(angle) * speed;    // accelerateToObject
-    //  body.force.y = Math.sin(angle) * speed;
-  }
+
+    body.damping = 0;
+    body.angularDamping = 0;
+
+    var angle = Math.atan2(body.velocity.y, body.velocity.x);
+    body.angle = angle * 180 / Math.PI;
+    body.angle += 90;
+   }
 
   destroyElement() {
     this._remove = true;
@@ -59,11 +61,10 @@ class MoveableObject extends Sprite {
     return true;
   }
 }
-
 function enableAnimation(obj) {
-    const animations = obj.animations;
-    animations.add('walk');
-    animations.play('walk', 10, true);
+  const animations = obj.animations;
+  animations.add('walk');
+  animations.play('walk', 10, true);
 }
 
 export default MoveableObject;

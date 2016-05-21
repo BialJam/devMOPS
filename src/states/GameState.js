@@ -11,7 +11,7 @@ class GameState extends Phaser.State {
   preload() {
     this.game.load.image('background', 'assets/background.png');
     this.game.load.image('item_rotated', 'assets/item_rotated.png');
-    this.game.load.spritesheet('moveableObject', 'assets/spritesheet.png', 45, 45, 10);
+    this.game.load.image('moveableObject', 'assets/ludzik.png');
     this.game.load.physics('item_rotated', 'assets/test.json');
     this.game.load.spritesheet('meta_yellow', 'assets/meta.png', 32, 32, 1);
   }
@@ -31,6 +31,9 @@ class GameState extends Phaser.State {
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.setImpactEvents(true);
     game.physics.p2.restitution = 0.8;
+    game.physics.p2.gravity.y = 0;
+    game.physics.p2.gravity.x = 0;
+
     var mainCollisionGroup = this.game.physics.p2.createCollisionGroup();
     var secondCollisionGroup = this.game.physics.p2.createCollisionGroup();
     game.physics.p2.updateBoundsCollisionGroup();
@@ -42,8 +45,8 @@ class GameState extends Phaser.State {
 
     game.add.existing(this.item);
     game.add.existing(this.meta);
-    
-    const generator = new Generator('a', game, 0, 0, mainCollisionGroup, secondCollisionGroup, 'yellow', logic);
+
+    const generator = new Generator('a', game, 250, 250, mainCollisionGroup, secondCollisionGroup, 'yellow', logic);
 
     this.item.enablePhysics();
     this.meta.enablePhysics();
