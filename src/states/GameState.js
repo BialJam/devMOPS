@@ -20,9 +20,7 @@ class GameState extends Phaser.State {
     this.createToolbox();
 
     this.moveableObject = new MoveableObject(this.game, center.x, center.y);
-    this.game.add.existing(this.moveableObject);
-
-    this.game.physics.p2.enable([ this.item], true);
+    //this.game.add.existing(this.moveableObject);
 
     //this.item.enableCollisions();
 

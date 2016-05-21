@@ -5,14 +5,15 @@ class MoveableObject extends Sprite {
 
   constructor(game, x, y) {
     super(game, x, y, 'moveableObject');
-    game.physics.enable(this);
+    game.add.existing(this);
+    game.physics.p2.enable(this, true);
 
-    const body = this.body;
-    body.mass = 100;
-    body.velocity = new Point(10, 1);
-    body.collideWorldBounds = true;
-    body.worldBounce = new Point(1, 1);
-    body.bounce.setTo(1,1);
+    // const body = this.body;
+    // body.mass = 100;
+    // body.velocity = new Point(10, 1);
+    // body.collideWorldBounds = true;
+    // body.worldBounce = new Point(1, 1);
+    // body.bounce.setTo(1,1);
 
     const animations = this.animations;
     animations.add('walk');
