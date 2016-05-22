@@ -19,14 +19,15 @@ class Generator {
   start() {
     const team = this.team === 'red' ? 'start_red' : 'start_green';
     const arrow = new Phaser.Sprite(this.game, this.x, this.y, team);
+
+    arrow.anchor.setTo(0.5, 0.5);
     arrow.angle = this.initialRotation;
     this.game.add.existing(arrow);
-
 
     const timer = this.game.time.events.add( this.readyTime,
         () => {
           console.log('its time');
-          arrow.destroy(true);
+          //arrow.destroy(true);
           this.generatePersons();
         }, this);
     this.game.time.events.start();
@@ -53,7 +54,7 @@ class Generator {
 
   createPerson() {
     const game = this.game;
-    const item = new MoveableObject(game, this.x + 35, this.y + 35, this.ownCollisionGroup, this.team, this.initialRotation);
+    const item = new MoveableObject(game, this.x , this.y , this.ownCollisionGroup, this.team, this.initialRotation);
     this.gameLogic.registerWalker(item);
     game.add.existing(item);
     item.enablePhysics();
