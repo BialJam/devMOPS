@@ -9,6 +9,7 @@ import GameTimer from 'logic/GameTimer';
 import Generator from 'objects/Generator';
 import Toolbox from 'objects/Toolbox';
 
+
 class GameState extends Phaser.State {
 
   preload() {
@@ -19,6 +20,7 @@ class GameState extends Phaser.State {
     this.game.load.image('moveableObject_green', 'assets/ludzik_green.png');
     this.game.load.image('start_green', 'assets/start_green.png');
     this.game.load.image('start_red', 'assets/start_red.png');
+    this.game.load.image('restart', 'assets/restart.png');
 
     this.game.load.physics('belka', 'assets/belka.json');
     this.game.load.spritesheet('meta_red', 'assets/meta_red.png');
@@ -115,6 +117,22 @@ class GameState extends Phaser.State {
     game.input.onUp.add(this.onUp, this);
     game.input.addMoveCallback(this.move, this);
     game.physics.p2.paused = false;
+
+    this.setupRestart();
+  }
+
+  setupRestart(){
+    const game = this.game;
+    const params = this.params;
+
+    const restart = new Phaser.Sprite(game, 600, 550, 'restart');
+    game.add.existing(restart);
+
+    restart.inputEnabled = true;
+    restart.events.onInputDown.add(()=>{
+      params.onFail();
+    }, this);
+
   }
 
   onDown(pointer) {

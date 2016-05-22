@@ -22,6 +22,7 @@ class Generator {
     this.game.add.existing(arrow);
 
     let that = this;
+
     setTimeout(() => {
       arrow.destroy(true);
       that.generatePersons();
