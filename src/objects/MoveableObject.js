@@ -12,7 +12,7 @@ class MoveableObject extends Sprite {
   }
 
   enablePhysics() {
-    this.game.physics.p2.enable(this, false);
+    this.game.physics.p2.enable(this);
     const body = this.body;
 
     body.setCircle(20);

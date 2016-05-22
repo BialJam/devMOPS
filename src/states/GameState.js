@@ -69,6 +69,7 @@ class GameState extends Phaser.State {
     });
     timer.start();
     // Physics enabled
+    game.physics.p2 = null;
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.setImpactEvents(true);
     game.physics.p2.restitution = 1;
@@ -81,7 +82,7 @@ class GameState extends Phaser.State {
     var mainCollisionGroup = this.game.physics.p2.createCollisionGroup();
     var secondCollisionGroup = this.game.physics.p2.createCollisionGroup();
     var toolboxCollisionGroup = this.game.physics.p2.createCollisionGroup();
-    game.physics.p2.updateBoundsCollisionGroup();
+    game.physics.p2.updateBoundsCollisionGroup(true);
 
     game.physics.startSystem(Phaser.Physics.P2JS);
 
@@ -89,8 +90,6 @@ class GameState extends Phaser.State {
     var toolbox = new Toolbox(this.game, 400, 560, mainCollisionGroup, toolboxCollisionGroup);
     game.add.existing(toolbox);
     toolbox.enablePhysics();
-    // game.add.existing(this.item);
-    // this.item.enablePhysics();
 
     params.level.teams.forEach(team => {
       const meta = new Meta(this.game, team.metaX, team.metaY, mainCollisionGroup, team.name);
@@ -106,9 +105,6 @@ class GameState extends Phaser.State {
     ToolsFactory.init(game, secondCollisionGroup, [mainCollisionGroup, secondCollisionGroup]);
     ToolsFactory.addTool();
 
-    // Collisions
-    //this.item.body.collides([mainCollisionGroup, secondCollisionGroup]);
-
     this.mouseBody = new p2.Body();
     game.physics.p2.world.addBody(this.mouseBody);
 
@@ -117,7 +113,6 @@ class GameState extends Phaser.State {
     game.input.addMoveCallback(this.move, this);
     game.physics.p2.paused = false;
   }
-
 
   onDown(pointer) {
     DraggableItem.onDown(pointer, this.mouseBody, this.game);

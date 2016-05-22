@@ -10,7 +10,7 @@ class Game extends Phaser.Game {
     this.startLevel(0, this.state);
   }
 
-  startLevel(currentLevel = 0, state) {
+  startLevel(currentLevel = 0, stateManager) {
 
     const data = {};
     const levels = Levels.getLevels();
@@ -24,14 +24,14 @@ class Game extends Phaser.Game {
         return;
       }
 
-      this.startLevel(currentLevel);
+      this.startLevel(currentLevel, stateManager);
     };
 
     data.onFail = ()=> {
-      this.startLevel(0, state);
-    }
+      this.startLevel(0, stateManager);
+    };
 
-    state.start('GameState', true, true, data);
+    stateManager.start('GameState', true, true, data);
   }
 
 }
