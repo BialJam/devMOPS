@@ -108,9 +108,11 @@ class GameState extends Phaser.State {
 
     ToolsFactory.init(game, secondCollisionGroup, [mainCollisionGroup]);
     ToolsFactory.addTool();
-    ToolsFactory.addTool('belka45');
+    ToolsFactory.addTool();
+    //ToolsFactory.addTool('belka45');
     ToolsFactory.addTool('belka90');
-    ToolsFactory.addTool('belka135');
+    ToolsFactory.addTool('belka90');
+    //ToolsFactory.addTool('belka135');
 
     this.mouseBody = new p2.Body();
     game.physics.p2.world.addBody(this.mouseBody);

@@ -6,30 +6,7 @@
 class Levels {
 
   static getLevels() {
-    return [{
-      ready: 3,
-      timeout: 10,
-      teams: [
-        {
-          name: 'red',
-          count: 3,
-          posX: 100,
-          posY: 400,
-          rotation: 0,
-          metaX: 125,
-          metaY: 100
-        },
-
-        {
-          name: 'green',
-          count: 3,
-          posX: 600,
-          posY: 400,
-          rotation: 0,
-          metaX: 625,
-          metaY: 100
-        }]
-    },
+    return [
       {
         ready: 10,
         timeout: 15,
@@ -55,6 +32,7 @@ class Levels {
           }]
       },
 
+
       {
         ready: 10,
         timeout: 15,
@@ -78,7 +56,32 @@ class Levels {
             metaX: 750,
             metaY: 100
           }]
-      }];
+      },
+      {
+        ready: 10,
+        timeout: 20,
+        teams: [
+          {
+            name: 'red',
+            count: 10,
+            posX: 300,
+            posY: 400,
+            rotation: 0,
+            metaX: 625,
+            metaY: 150
+          },
+
+          {
+            name: 'green',
+            count: 3,
+            posX: 600,
+            posY: 400,
+            rotation: 0,
+            metaX: 125,
+            metaY: 50
+          }]
+      },
+    ];
   }
 }
 
