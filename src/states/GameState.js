@@ -9,6 +9,7 @@ import GameTimer from 'logic/GameTimer';
 import Generator from 'objects/Generator';
 import Toolbox from 'objects/Toolbox';
 
+
 class GameState extends Phaser.State {
 
   preload() {
@@ -20,6 +21,7 @@ class GameState extends Phaser.State {
     this.game.load.image('start_green', 'assets/start_green.png');
     this.game.load.image('start_red', 'assets/start_red.png');
     this.game.load.image('asphalt', 'assets/asphalt.png');
+    this.game.load.image('restart', 'assets/restart.png');
 
     this.game.load.physics('belka', 'assets/belka.json');
     this.game.load.spritesheet('meta_red', 'assets/meta_red.png');
@@ -43,7 +45,7 @@ class GameState extends Phaser.State {
     const center = getCenter(game.world);
     const centerTextStyle = {font: "65px Monospaced", fill: "#aabbcc", align: "center"};
     const textStyle = {font: "30px Monospaced", fill: "#aabbcc", align: "right"};
-    const timer = new GameTimer(game.time.create(false), 3, this.params.level.timeout, function (state, secondsLeft) {
+    const timer = new GameTimer(game.time.create(false), this.params.level.ready, this.params.level.timeout, function (state, secondsLeft) {
       if (state === 'ready') {
         timeLeftText.setText('READY: ' + secondsLeft);
       } else {
@@ -100,7 +102,7 @@ class GameState extends Phaser.State {
       logic.registerMeta(meta);
 
       const generator = new Generator(game, team.posX, team.posY, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup,
-        toolboxCollisionGroup], team.name, logic, team.rotation);
+        toolboxCollisionGroup], team.name, logic, team.rotation, params.level.ready);
       generator.start();
     });
 
@@ -117,6 +119,22 @@ class GameState extends Phaser.State {
     game.input.onUp.add(this.onUp, this);
     game.input.addMoveCallback(this.move, this);
     game.physics.p2.paused = false;
+
+    this.setupRestart();
+  }
+
+  setupRestart(){
+    const game = this.game;
+    const params = this.params;
+
+    const restart = new Phaser.Sprite(game, 600, 550, 'restart');
+    game.add.existing(restart);
+
+    restart.inputEnabled = true;
+    restart.events.onInputDown.add(()=>{
+      params.onFail();
+    }, this);
+
   }
 
   onDown(pointer) {
