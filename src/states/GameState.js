@@ -25,6 +25,10 @@ class GameState extends Phaser.State {
 
   }
 
+  init(params){
+    this.params = params;
+  }
+
   create() {
     const game = this.game;
     game.stage.backgroundColor = "#3d424c";
@@ -65,25 +69,23 @@ class GameState extends Phaser.State {
     game.physics.startSystem(Phaser.Physics.P2JS);
 
     this.item = this.createToolbox(secondCollisionGroup);
-    this.metaGreen = new Meta(this.game, center.x + 200, center.y - 100, mainCollisionGroup, 'green');
-    this.metaRed = new Meta(this.game, center.x, center.y + 100, mainCollisionGroup, 'red');
 
     var toolbox = new Toolbox(this.game, 400, 560, mainCollisionGroup, toolboxCollisionGroup);
     game.add.existing(toolbox);
     toolbox.enablePhysics();
     game.add.existing(this.item);
-    game.add.existing(this.metaGreen);
-    game.add.existing(this.metaRed);
-
-    const generator = new Generator( game, 250, 250, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup, toolboxCollisionGroup], 'green', logic, 180);
-    const oppositeGenerator = new Generator( game, 150, 250, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup, toolboxCollisionGroup], 'red', logic, 270);
-
     this.item.enablePhysics();
-    this.metaRed.enablePhysics();
-    this.metaGreen.enablePhysics();
 
-    logic.registerMeta(this.metaRed);
-    logic.registerMeta(this.metaGreen);
+    this.params.teams.forEach(team => {
+      const meta = new Meta(this.game, team.metaX, team.metaY, mainCollisionGroup, team.name);
+      game.add.existing(meta);
+      meta.enablePhysics();
+      logic.registerMeta(meta);
+
+      const generator = new Generator( game, team.posX, team.posY, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup,
+        toolboxCollisionGroup], team.name, logic, team.rotation);
+        generator.start();
+    });
 
     // Collisions
     this.item.body.collides([mainCollisionGroup, secondCollisionGroup]);
@@ -93,9 +95,6 @@ class GameState extends Phaser.State {
     game.input.onDown.add(this.onDown, this);
     game.input.onUp.add(this.onUp, this);
     game.input.addMoveCallback(this.move, this);
-
-    generator.start();
-    oppositeGenerator.start();
   }
 
 
