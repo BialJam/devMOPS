@@ -1,11 +1,14 @@
 /* jshint esversion: 6 */
 
+let lastClickedBody, mouseConstraint;
+
 class DraggableItem extends Phaser.Sprite {
-  constructor(game, x, y, collisionGroup, initialTranslate = 0) {
+  constructor(game, x, y, collisionGroup, collidesWith, initialRotation = 0) {
     super(game, x, y, 'item_rotated');
     this._collisionGroup = collisionGroup;
+    this.collidesWith = collidesWith;
     this.draggable = true;
-    this.initialTranslate = initialTranslate;
+    this.initialRotation = initialRotation;
   }
 
   enablePhysics() {
@@ -16,17 +19,17 @@ class DraggableItem extends Phaser.Sprite {
     body.clearShapes();
     body.loadPolygon('belka', 'belka');
     body.setCollisionGroup(this._collisionGroup);
-    body.angle = this.initialTranslate;
-    body.rotation = 180 * (Math.PI / 180);
+    body.angle = this.initialRotation;
+    body.rotation = (this.initialRotation + 90) * (Math.PI / 180);
     body.fixedRotation = true;
 
     this.inputEnabled = true;
     this.input.enableDrag();
+    body.collides(this.collidesWith);
   }
 
 
-  onDown(pointer, mouseBody) {
-    const game = this.game;
+  static onDown(pointer, mouseBody, game) {
     var bodies = game.physics.p2.hitTest(pointer.position);
 
     // p2 uses different coordinate system, so convert the pointer position to p2's coordinate system
@@ -38,30 +41,31 @@ class DraggableItem extends Phaser.Sprite {
         return;
       }
 
-      this.clickedBody = clickedBody.parent;
-      this.clickedBody.mass = 1;
+      lastClickedBody = clickedBody.parent;
+      lastClickedBody.mass = 1;
 
       var localPointInBody = [0, 0];
       // this function takes physicsPos and coverts it to the body's local coordinate system
       clickedBody.toLocalFrame(localPointInBody, physicsPos);
 
       // use a revoluteContraint to attach mouseBody to the clicked body
-      this.mouseConstraint = game.physics.p2.createLockConstraint(mouseBody, clickedBody);
+      mouseConstraint = game.physics.p2.createLockConstraint(mouseBody, clickedBody);
     }
   }
 
-  onUp() {
-    if (typeof this.clickedBody !== 'undefined') {
-      this.clickedBody.mass = 99999;
-      this.clickedBody.setZeroVelocity();
-      this.clickedBody.setZeroRotation();
-      this.game.physics.p2.removeConstraint(this.mouseConstraint);
+  static onUp(game) {
+    if (typeof lastClickedBody !== 'undefined') {
+
+      lastClickedBody.mass = 99999;
+      lastClickedBody.setZeroVelocity();
+      lastClickedBody.setZeroRotation();
+      game.physics.p2.removeConstraint(mouseConstraint);
     }
   }
 
-  move(pointer, mouseBody) {
-    mouseBody.position[0] = this.game.physics.p2.pxmi(pointer.position.x);
-    mouseBody.position[1] = this.game.physics.p2.pxmi(pointer.position.y);
+  static move(pointer, mouseBody, game) {
+    mouseBody.position[0] = game.physics.p2.pxmi(pointer.position.x);
+    mouseBody.position[1] = game.physics.p2.pxmi(pointer.position.y);
   }
 }
 

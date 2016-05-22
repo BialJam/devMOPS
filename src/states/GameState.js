@@ -3,6 +3,7 @@
 import DraggableItem from 'objects/DraggableItem';
 import Meta from 'objects/Meta';
 import GameLogic from 'logic/GameLogic';
+import ToolsFactory from 'objects/ToolsFactory';
 import GameTimer from 'logic/GameTimer';
 
 import Generator from 'objects/Generator';
@@ -84,13 +85,12 @@ class GameState extends Phaser.State {
 
     game.physics.startSystem(Phaser.Physics.P2JS);
 
-    this.item = this.createToolbox(secondCollisionGroup);
 
     var toolbox = new Toolbox(this.game, 400, 560, mainCollisionGroup, toolboxCollisionGroup);
     game.add.existing(toolbox);
     toolbox.enablePhysics();
-    game.add.existing(this.item);
-    this.item.enablePhysics();
+    // game.add.existing(this.item);
+    // this.item.enablePhysics();
 
     params.level.teams.forEach(team => {
       const meta = new Meta(this.game, team.metaX, team.metaY, mainCollisionGroup, team.name);
@@ -103,11 +103,15 @@ class GameState extends Phaser.State {
       generator.start();
     });
 
+    ToolsFactory.init(game, secondCollisionGroup, [mainCollisionGroup, secondCollisionGroup]);
+    ToolsFactory.addTool();
+
     // Collisions
-    this.item.body.collides([mainCollisionGroup, secondCollisionGroup]);
+    //this.item.body.collides([mainCollisionGroup, secondCollisionGroup]);
 
     this.mouseBody = new p2.Body();
     game.physics.p2.world.addBody(this.mouseBody);
+
     game.input.onDown.add(this.onDown, this);
     game.input.onUp.add(this.onUp, this);
     game.input.addMoveCallback(this.move, this);
@@ -116,17 +120,15 @@ class GameState extends Phaser.State {
 
 
   onDown(pointer) {
-    if (!this.lockedDown) {
-      this.item.onDown(pointer, this.mouseBody);
-    }
+    DraggableItem.onDown(pointer, this.mouseBody, this.game);
   }
 
   onUp() {
-    this.item.onUp();
+    DraggableItem.onUp(this.game);
   }
 
   move(pointer) {
-    this.item.move(pointer, this.mouseBody);
+    DraggableItem.move(pointer, this.mouseBody, this.game);
   }
 
   createToolbox(collisionGroup) {
