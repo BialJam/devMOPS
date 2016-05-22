@@ -103,7 +103,7 @@ class GameState extends Phaser.State {
       generator.start();
     });
 
-    ToolsFactory.init(game, secondCollisionGroup, [mainCollisionGroup, secondCollisionGroup]);
+    ToolsFactory.init(game, secondCollisionGroup, [mainCollisionGroup]);
     ToolsFactory.addTool();
     ToolsFactory.addTool('belka45');
     ToolsFactory.addTool('belka90');
