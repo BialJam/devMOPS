@@ -9,6 +9,7 @@ class DraggableItem extends Phaser.Sprite {
     this.collidesWith = collidesWith;
     this.draggable = true;
     this.initialRotation = initialRotation;
+    this.angle = initialRotation;
   }
 
   enablePhysics() {
@@ -20,7 +21,6 @@ class DraggableItem extends Phaser.Sprite {
     body.loadPolygon('belka', 'belka');
     body.setCollisionGroup(this._collisionGroup);
     body.angle = this.initialRotation;
-    body.rotation = (this.initialRotation + 90) * (Math.PI / 180);
     body.fixedRotation = true;
 
     this.inputEnabled = true;

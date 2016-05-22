@@ -102,8 +102,11 @@ class GameState extends Phaser.State {
       generator.start();
     });
 
-    ToolsFactory.init(game, secondCollisionGroup, [mainCollisionGroup, secondCollisionGroup]);
+    ToolsFactory.init(game, secondCollisionGroup, [mainCollisionGroup]);
     ToolsFactory.addTool();
+    ToolsFactory.addTool('belka45');
+    ToolsFactory.addTool('belka90');
+    ToolsFactory.addTool('belka135');
 
     this.mouseBody = new p2.Body();
     game.physics.p2.world.addBody(this.mouseBody);
@@ -115,7 +118,9 @@ class GameState extends Phaser.State {
   }
 
   onDown(pointer) {
-    DraggableItem.onDown(pointer, this.mouseBody, this.game);
+    if (!this.lockedDown) {
+      DraggableItem.onDown(pointer, this.mouseBody, this.game);
+    }
   }
 
   onUp() {
