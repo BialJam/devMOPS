@@ -133,6 +133,8 @@ class GameState extends Phaser.State {
     restart.inputEnabled = true;
     restart.events.onInputDown.add(()=>{
       params.onFail();
+      this.game.time.events.removeAll();
+      window.clear
     }, this);
 
   }

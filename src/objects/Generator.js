@@ -22,12 +22,14 @@ class Generator {
     arrow.angle = this.initialRotation;
     this.game.add.existing(arrow);
 
-    let that = this;
 
-    setTimeout(() => {
-      arrow.destroy(true);
-      that.generatePersons();
-    }, this.readyTime);
+    const timer = this.game.time.events.add( this.readyTime,
+        () => {
+          console.log('its time');
+          arrow.destroy(true);
+          this.generatePersons();
+        }, this);
+    this.game.time.events.start();
 
   }
 
@@ -35,14 +37,18 @@ class Generator {
     let count = 0;
     const total = 3;
 
-    let interval = window.setInterval(()=> {
+    const timer = this.game.time.create(false);
+
+    timer.loop(Phaser.Timer.SECOND, ()=>{
       if (count < total) {
         this.createPerson.call(this);
         count++;
       } else {
-        window.clearInterval(interval);
+        this.game.time.events.remove(timer);
       }
-    }, 500);
+    }, this);
+
+    timer.start();
   }
 
   createPerson() {
