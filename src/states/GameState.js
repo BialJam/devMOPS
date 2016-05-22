@@ -30,7 +30,7 @@ class GameState extends Phaser.State {
   }
 
   create() {
-    var timeLeftText;
+    var timeLeftText, self = this;
     const game = this.game;
     game.stage.backgroundColor = "#3d424c";
     const center = getCenter(game.world);
@@ -40,6 +40,7 @@ class GameState extends Phaser.State {
       if (state === 'ready') {
         timeLeftText.setText('READY: ' + secondsLeft);
       } else {
+        self.lockDown();
         timeLeftText.setText('HURRY: ' + secondsLeft); 
       }
     }, function () {
@@ -107,7 +108,9 @@ class GameState extends Phaser.State {
 
 
   onDown(pointer) {
-    this.item.onDown(pointer, this.mouseBody);
+    if (!this.lockedDown) {
+      this.item.onDown(pointer, this.mouseBody);
+    }
   }
 
   onUp() {
@@ -121,6 +124,10 @@ class GameState extends Phaser.State {
   createToolbox(collisionGroup) {
     const center = getCenter(this.game.world);
     return new DraggableItem(this.game, center.x + 100, center.y, collisionGroup, 90);
+  }
+
+  lockDown() {
+    this.lockedDown = true;
   }
 
 }
