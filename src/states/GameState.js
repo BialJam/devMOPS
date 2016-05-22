@@ -87,7 +87,7 @@ class GameState extends Phaser.State {
     game.physics.startSystem(Phaser.Physics.P2JS);
 
 
-    var toolbox = new Toolbox(this.game, 400, 560, mainCollisionGroup, toolboxCollisionGroup);
+    var toolbox = new Toolbox(this.game, 400, 530, mainCollisionGroup, toolboxCollisionGroup);
     game.add.existing(toolbox);
     toolbox.enablePhysics();
 
