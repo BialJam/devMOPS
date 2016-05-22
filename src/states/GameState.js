@@ -35,7 +35,7 @@ class GameState extends Phaser.State {
     game.stage.backgroundColor = "#3d424c";
 
     let params = this.params;
-
+    this.lockedDown = false;
 
     const center = getCenter(game.world);
     const centerTextStyle = {font: "65px Arial", fill: "#aabbcc", align: "center"};
