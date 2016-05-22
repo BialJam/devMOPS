@@ -80,6 +80,29 @@ class Levels {
             metaX: 125,
             metaY: 50
           }]
+      },  {
+        ready: 10,
+        timeout: 20,
+        teams: [
+          {
+            name: 'red',
+            count: 10,
+            posX: 50,
+            posY: 400,
+            rotation: 0,
+            metaX: 625,
+            metaY: 250
+          },
+
+          {
+            name: 'green',
+            count: 3,
+            posX: 150,
+            posY: 400,
+            rotation: 0,
+            metaX: 150,
+            metaY: 250
+          }]
       },
     ];
   }
