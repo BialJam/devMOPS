@@ -105,6 +105,9 @@ class GameState extends Phaser.State {
 
     ToolsFactory.init(game, secondCollisionGroup, [mainCollisionGroup, secondCollisionGroup]);
     ToolsFactory.addTool();
+    ToolsFactory.addTool('belka45');
+    ToolsFactory.addTool('belka90');
+    ToolsFactory.addTool('belka135');
 
     // Collisions
     //this.item.body.collides([mainCollisionGroup, secondCollisionGroup]);
