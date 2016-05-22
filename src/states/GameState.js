@@ -36,6 +36,7 @@ class GameState extends Phaser.State {
     var timeLeftText, self = this;
     const game = this.game;
     game.stage.backgroundColor = "#3d424c";
+    game.time.events.removeAll();
 
     let params = this.params;
     this.lockedDown = false;
@@ -131,6 +132,8 @@ class GameState extends Phaser.State {
     restart.inputEnabled = true;
     restart.events.onInputDown.add(()=>{
       params.onFail();
+      this.game.time.events.removeAll();
+      window.clear
     }, this);
 
   }
