@@ -3,6 +3,7 @@
 import DraggableItem from 'objects/DraggableItem';
 import Meta from 'objects/Meta';
 import GameLogic from 'logic/GameLogic';
+import GameTimer from 'logic/GameTimer';
 
 import Generator from 'objects/Generator';
 import Toolbox from 'objects/Toolbox';
@@ -37,11 +38,22 @@ class GameState extends Phaser.State {
       game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "You WIN!", textStyle);
       game.physics.p2.paused = true;
       this.success = 'win';
+      timer.stop();
     }, function () {
       game.add.text(getCenter(game.world).x - 190,  getCenter(game.world).y - 40, "You LOOSE!", textStyle);
       game.physics.p2.paused = true;
       this.success = 'loose';
+      timer.stop();
     });
+    const timer = new GameTimer(game.time.create(false), 3, 5, function (state, secondsLeft) {
+      console.log(state);
+      console.log(secondsLeft);
+    }, function () {
+      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "Time is up!!!", textStyle);
+      game.physics.p2.paused = true;
+      this.success = 'timeout';
+    });
+    timer.start();
     // Physics enabled
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.setImpactEvents(true);

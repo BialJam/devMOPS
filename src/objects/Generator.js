@@ -31,7 +31,7 @@ class Generator {
 
   generatePersons() {
     let count = 0;
-    const total = 10;
+    const total = 3;
 
     let interval = window.setInterval(()=> {
       if (count < total) {
