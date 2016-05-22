@@ -11,7 +11,7 @@ class Toolbox extends Sprite {
 
     // const body = this.body;
   enablePhysics() {
-    this.game.physics.p2.enable(this, true);
+    this.game.physics.p2.enable(this);
     const body = this.body;
     body.collides(this.collidesWith);
     body.static = true;
