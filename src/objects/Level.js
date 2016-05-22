@@ -149,6 +149,31 @@ class Levels {
             metaX: 150,
             metaY: 50
           }]
+      },
+      //bartek
+      {
+        ready: 20,
+        timeout: 25,
+        teams: [
+          {
+            name: 'red',
+            count: 10,
+            posX: 50,
+            posY: 50,
+            rotation: 90,
+            metaX: 50,
+            metaY: 200
+          },
+
+          {
+            name: 'green',
+            count: 3,
+            posX: 250,
+            posY: 400,
+            rotation: 0,
+            metaX: 350,
+            metaY: 400
+          }]
       }
     ];
   }
