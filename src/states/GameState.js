@@ -39,9 +39,9 @@ class GameState extends Phaser.State {
     this.lockedDown = false;
 
     const center = getCenter(game.world);
-    const centerTextStyle = {font: "65px Arial", fill: "#aabbcc", align: "center"};
-    const textStyle = {font: "30px Arial", fill: "#aabbcc", align: "right"};
-    const timer = new GameTimer(game.time.create(false), 3, 5, function (state, secondsLeft) {
+    const centerTextStyle = {font: "65px Monospaced", fill: "#aabbcc", align: "center"};
+    const textStyle = {font: "30px Monospaced", fill: "#aabbcc", align: "right"};
+    const timer = new GameTimer(game.time.create(false), 3, this.params.level.timeout, function (state, secondsLeft) {
       if (state === 'ready') {
         timeLeftText.setText('READY: ' + secondsLeft);
       } else {

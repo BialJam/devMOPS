@@ -28,7 +28,7 @@ class Game extends Phaser.Game {
     };
 
     data.onFail = ()=> {
-      this.startLevel(0, stateManager);
+      this.startLevel(currentLevel, stateManager);
     };
 
     stateManager.start('GameState', true, true, data);
