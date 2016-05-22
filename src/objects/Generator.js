@@ -3,7 +3,7 @@ import MoveableObject from 'objects/MoveableObject';
 
 class Generator {
 
-  constructor(game, x, y, ownCollisionGroup, collisionGroups, team, gameLogic, initialRotation) {
+  constructor(game, x, y, ownCollisionGroup, collisionGroups, team, gameLogic, initialRotation, readyTime) {
     this.x = x;
     this.y = y;
     this.collisionGroups = collisionGroups;
@@ -12,6 +12,7 @@ class Generator {
     this.team = team;
     this.gameLogic = gameLogic;
     this.initialRotation = initialRotation;
+    this.readyTime = readyTime * 1000;
   }
 
 
@@ -26,7 +27,7 @@ class Generator {
     setTimeout(() => {
       arrow.destroy(true);
       that.generatePersons();
-    }, 3000);
+    }, this.readyTime);
 
   }
 
