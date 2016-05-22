@@ -31,8 +31,6 @@ class Levels {
             metaY: 50
           }]
       },
-
-
       {
         ready: 10,
         timeout: 15,
@@ -102,6 +100,29 @@ class Levels {
             rotation: 0,
             metaX: 150,
             metaY: 250
+          }]
+      },{
+        ready: 10,
+        timeout: 20,
+        teams: [
+          {
+            name: 'red',
+            count: 10,
+            posX: 750,
+            posY: 360,
+            rotation: 270,
+            metaX: 750,
+            metaY: 100
+          },
+
+          {
+            name: 'green',
+            count: 3,
+            posX: 750,
+            posY: 260,
+            rotation: 270,
+            metaX: 300,
+            metaY: 50
           }]
       },
     ];
