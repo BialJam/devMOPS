@@ -30,6 +30,14 @@ class GameState extends Phaser.State {
     game.stage.backgroundColor = "#3d424c";
     const center = getCenter(game.world);
     const textStyle = { font: "65px Arial", fill: "#aabbcc", align: "center" };
+    const timer = new GameTimer(game.time.create(false), 3, 5, function (state, secondsLeft) {
+      console.log(state);
+      console.log(secondsLeft);
+    }, function () {
+      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "Time is up!!!", textStyle);
+      game.physics.p2.paused = true;
+      this.success = 'timeout';
+    });
     const logic = new GameLogic(function () {
       game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "You WIN!", textStyle);
       game.physics.p2.paused = true;
@@ -40,14 +48,6 @@ class GameState extends Phaser.State {
       game.physics.p2.paused = true;
       this.success = 'loose';
       timer.stop();
-    });
-    const timer = new GameTimer(game.time.create(false), 3, 5, function (state, secondsLeft) {
-      console.log(state);
-      console.log(secondsLeft);
-    }, function () {
-      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "Time is up!!!", textStyle);
-      game.physics.p2.paused = true;
-      this.success = 'timeout';
     });
     timer.start();
     // Physics enabled
