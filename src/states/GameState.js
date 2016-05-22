@@ -19,6 +19,7 @@ class GameState extends Phaser.State {
     this.game.load.image('moveableObject_green', 'assets/ludzik_green.png');
     this.game.load.image('start_green', 'assets/start_green.png');
     this.game.load.image('start_red', 'assets/start_red.png');
+    this.game.load.image('asphalt', 'assets/asphalt.png');
 
     this.game.load.physics('belka', 'assets/belka.json');
     this.game.load.spritesheet('meta_red', 'assets/meta_red.png');
@@ -33,7 +34,8 @@ class GameState extends Phaser.State {
   create() {
     var timeLeftText, self = this;
     const game = this.game;
-    game.stage.backgroundColor = "#3d424c";
+    game.add.tileSprite(0, 0, 800, 600, 'asphalt');
+    // game.stage.backgroundColor = "#3d424c";
 
     let params = this.params;
     this.lockedDown = false;
