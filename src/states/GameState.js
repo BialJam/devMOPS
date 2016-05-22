@@ -25,25 +25,31 @@ class GameState extends Phaser.State {
 
   }
 
-  init(params){
+  init(params) {
     this.params = params;
   }
 
   create() {
     const game = this.game;
     game.stage.backgroundColor = "#3d424c";
+
+    let params = this.params;
     const center = getCenter(game.world);
-    const textStyle = { font: "65px Arial", fill: "#aabbcc", align: "center" };
+    const textStyle = {font: "65px Arial", fill: "#aabbcc", align: "center"};
     const logic = new GameLogic(function () {
       game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "You WIN!", textStyle);
       game.physics.p2.paused = true;
       this.success = 'win';
       timer.stop();
+      setTimeout(() => params.onWin(), 1000);
+
     }, function () {
-      game.add.text(getCenter(game.world).x - 190,  getCenter(game.world).y - 40, "You LOOSE!", textStyle);
+      game.add.text(getCenter(game.world).x - 190, getCenter(game.world).y - 40, "You LOOSE!", textStyle);
       game.physics.p2.paused = true;
       this.success = 'loose';
       timer.stop();
+
+      setTimeout(() => params.onFail(), 1000);
     });
     const timer = new GameTimer(game.time.create(false), 3, 5, function (state, secondsLeft) {
       console.log(state);
@@ -76,15 +82,15 @@ class GameState extends Phaser.State {
     game.add.existing(this.item);
     this.item.enablePhysics();
 
-    this.params.teams.forEach(team => {
+    params.level.teams.forEach(team => {
       const meta = new Meta(this.game, team.metaX, team.metaY, mainCollisionGroup, team.name);
       game.add.existing(meta);
       meta.enablePhysics();
       logic.registerMeta(meta);
 
-      const generator = new Generator( game, team.posX, team.posY, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup,
+      const generator = new Generator(game, team.posX, team.posY, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup,
         toolboxCollisionGroup], team.name, logic, team.rotation);
-        generator.start();
+      generator.start();
     });
 
     // Collisions
@@ -95,6 +101,7 @@ class GameState extends Phaser.State {
     game.input.onDown.add(this.onDown, this);
     game.input.onUp.add(this.onUp, this);
     game.input.addMoveCallback(this.move, this);
+    game.physics.p2.paused = false;
   }
 
 
