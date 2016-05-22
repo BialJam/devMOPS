@@ -123,7 +123,9 @@ class GameState extends Phaser.State {
 
 
   onDown(pointer) {
-    DraggableItem.onDown(pointer, this.mouseBody, this.game);
+    if (!this.lockedDown) {
+      DraggableItem.onDown(pointer, this.mouseBody, this.game);
+    }
   }
 
   onUp() {
