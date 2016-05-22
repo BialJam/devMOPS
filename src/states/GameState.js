@@ -4,6 +4,7 @@ import DraggableItem from 'objects/DraggableItem';
 import Meta from 'objects/Meta';
 import GameLogic from 'logic/GameLogic';
 import ToolsFactory from 'objects/ToolsFactory';
+import GameTimer from 'logic/GameTimer';
 
 import Generator from 'objects/Generator';
 import Toolbox from 'objects/Toolbox';
@@ -25,26 +26,57 @@ class GameState extends Phaser.State {
 
   }
 
+  init(params) {
+    this.params = params;
+  }
+
   create() {
+    var timeLeftText, self = this;
     const game = this.game;
     game.stage.backgroundColor = "#3d424c";
+
+    let params = this.params;
+    this.lockedDown = false;
+
     const center = getCenter(game.world);
-    const textStyle = { font: "65px Arial", fill: "#aabbcc", align: "center" };
+    const centerTextStyle = {font: "65px Arial", fill: "#aabbcc", align: "center"};
+    const textStyle = {font: "30px Arial", fill: "#aabbcc", align: "right"};
+    const timer = new GameTimer(game.time.create(false), 3, 5, function (state, secondsLeft) {
+      if (state === 'ready') {
+        timeLeftText.setText('READY: ' + secondsLeft);
+      } else {
+        self.lockDown();
+        timeLeftText.setText('HURRY: ' + secondsLeft);
+      }
+    }, function () {
+      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "Time is up!!!", centerTextStyle);
+      game.physics.p2.paused = true;
+      this.success = 'timeout';
+      setTimeout(() => params.onFail(), 1000);
+    });
     const logic = new GameLogic(function () {
-      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "You WIN!", textStyle);
+      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "You WIN!", centerTextStyle);
       game.physics.p2.paused = true;
       this.success = 'win';
+      setTimeout(() => params.onWin(), 1000);
+      timer.stop();
     }, function () {
-      game.add.text(getCenter(game.world).x - 190,  getCenter(game.world).y - 40, "You LOOSE!", textStyle);
+      game.add.text(getCenter(game.world).x - 190, getCenter(game.world).y - 40, "You LOOSE!", centerTextStyle);
       game.physics.p2.paused = true;
       this.success = 'loose';
+      setTimeout(() => params.onFail(), 1000);
+      timer.stop();
     });
+    timer.start();
     // Physics enabled
     game.physics.startSystem(Phaser.Physics.P2JS);
     game.physics.p2.setImpactEvents(true);
     game.physics.p2.restitution = 1;
     game.physics.p2.gravity.y = 0;
     game.physics.p2.gravity.x = 0;
+
+    // text to counting time out!
+    timeLeftText = game.add.text(getCenter(game.world).x + 250, getCenter(game.world).y - 300, "READY!", textStyle);
 
     var mainCollisionGroup = this.game.physics.p2.createCollisionGroup();
     var secondCollisionGroup = this.game.physics.p2.createCollisionGroup();
@@ -53,25 +85,23 @@ class GameState extends Phaser.State {
 
     game.physics.startSystem(Phaser.Physics.P2JS);
 
-    this.metaGreen = new Meta(this.game, center.x + 200, center.y - 100, mainCollisionGroup, 'green');
-    this.metaRed = new Meta(this.game, center.x, center.y + 100, mainCollisionGroup, 'red');
 
     var toolbox = new Toolbox(this.game, 400, 560, mainCollisionGroup, toolboxCollisionGroup);
     game.add.existing(toolbox);
     toolbox.enablePhysics();
     // game.add.existing(this.item);
-    game.add.existing(this.metaGreen);
-    game.add.existing(this.metaRed);
-
-    const generator = new Generator( game, 250, 250, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup, toolboxCollisionGroup], 'green', logic, 180);
-    const oppositeGenerator = new Generator( game, 150, 250, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup, toolboxCollisionGroup], 'red', logic, 270);
-
     // this.item.enablePhysics();
-    this.metaRed.enablePhysics();
-    this.metaGreen.enablePhysics();
 
-    logic.registerMeta(this.metaRed);
-    logic.registerMeta(this.metaGreen);
+    params.level.teams.forEach(team => {
+      const meta = new Meta(this.game, team.metaX, team.metaY, mainCollisionGroup, team.name);
+      game.add.existing(meta);
+      meta.enablePhysics();
+      logic.registerMeta(meta);
+
+      const generator = new Generator(game, team.posX, team.posY, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup,
+        toolboxCollisionGroup], team.name, logic, team.rotation);
+      generator.start();
+    });
 
     ToolsFactory.init(game, secondCollisionGroup, [mainCollisionGroup, secondCollisionGroup]);
     ToolsFactory.addTool();
@@ -85,9 +115,7 @@ class GameState extends Phaser.State {
     game.input.onDown.add(this.onDown, this);
     game.input.onUp.add(this.onUp, this);
     game.input.addMoveCallback(this.move, this);
-
-    generator.start();
-    oppositeGenerator.start();
+    game.physics.p2.paused = false;
   }
 
 
@@ -106,6 +134,10 @@ class GameState extends Phaser.State {
   createToolbox(collisionGroup) {
     const center = getCenter(this.game.world);
     return new DraggableItem(this.game, center.x + 100, center.y, collisionGroup, 90);
+  }
+
+  lockDown() {
+    this.lockedDown = true;
   }
 
 }
