@@ -5,7 +5,6 @@ let lastClickedBody, mouseConstraint;
 class DraggableItem extends Phaser.Sprite {
   constructor(game, x, y, collisionGroup, collidesWith, initialRotation = 0) {
     super(game, x, y, 'item_rotated');
-    debugger;
     this._collisionGroup = collisionGroup;
     this.collidesWith = collidesWith;
     this.draggable = true;
