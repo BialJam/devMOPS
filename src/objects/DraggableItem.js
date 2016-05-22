@@ -13,7 +13,7 @@ class DraggableItem extends Phaser.Sprite {
   }
 
   enablePhysics() {
-    this.game.physics.p2.enable(this, true);
+    this.game.physics.p2.enable(this);
 
     const body = this.body;
     body.mass = 99999;
