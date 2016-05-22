@@ -41,7 +41,7 @@ class GameState extends Phaser.State {
     const center = getCenter(game.world);
     const centerTextStyle = {font: "65px Monospaced", fill: "#aabbcc", align: "center"};
     const textStyle = {font: "30px Monospaced", fill: "#aabbcc", align: "right"};
-    const timer = new GameTimer(game.time.create(false), 3, this.params.level.timeout, function (state, secondsLeft) {
+    const timer = new GameTimer(game.time.create(false), this.params.level.ready, this.params.level.timeout, function (state, secondsLeft) {
       if (state === 'ready') {
         timeLeftText.setText('READY: ' + secondsLeft);
       } else {
@@ -98,7 +98,7 @@ class GameState extends Phaser.State {
       logic.registerMeta(meta);
 
       const generator = new Generator(game, team.posX, team.posY, mainCollisionGroup, [mainCollisionGroup, secondCollisionGroup,
-        toolboxCollisionGroup], team.name, logic, team.rotation);
+        toolboxCollisionGroup], team.name, logic, team.rotation, params.level.ready);
       generator.start();
     });
 
