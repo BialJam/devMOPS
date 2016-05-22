@@ -30,25 +30,30 @@ class GameState extends Phaser.State {
   }
 
   create() {
+    var timeLeftText;
     const game = this.game;
     game.stage.backgroundColor = "#3d424c";
     const center = getCenter(game.world);
-    const textStyle = { font: "65px Arial", fill: "#aabbcc", align: "center" };
+    const centerTextStyle = { font: "65px Arial", fill: "#aabbcc", align: "center" };
+    const textStyle = { font: "30px Arial", fill: "#aabbcc", align: "right" };
     const timer = new GameTimer(game.time.create(false), 3, 5, function (state, secondsLeft) {
-      console.log(state);
-      console.log(secondsLeft);
+      if (state === 'ready') {
+        timeLeftText.setText('READY: ' + secondsLeft);
+      } else {
+        timeLeftText.setText('HURRY: ' + secondsLeft); 
+      }
     }, function () {
-      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "Time is up!!!", textStyle);
+      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "Time is up!!!", centerTextStyle);
       game.physics.p2.paused = true;
       this.success = 'timeout';
     });
     const logic = new GameLogic(function () {
-      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "You WIN!", textStyle);
+      game.add.text(getCenter(game.world).x - 150, getCenter(game.world).y - 40, "You WIN!", centerTextStyle);
       game.physics.p2.paused = true;
       this.success = 'win';
       timer.stop();
     }, function () {
-      game.add.text(getCenter(game.world).x - 190,  getCenter(game.world).y - 40, "You LOOSE!", textStyle);
+      game.add.text(getCenter(game.world).x - 190,  getCenter(game.world).y - 40, "You LOOSE!", centerTextStyle);
       game.physics.p2.paused = true;
       this.success = 'loose';
       timer.stop();
@@ -60,6 +65,9 @@ class GameState extends Phaser.State {
     game.physics.p2.restitution = 1;
     game.physics.p2.gravity.y = 0;
     game.physics.p2.gravity.x = 0;
+
+    // text to counting time out!
+    timeLeftText = game.add.text(getCenter(game.world).x + 250, getCenter(game.world).y - 300, "READY!", textStyle);
 
     var mainCollisionGroup = this.game.physics.p2.createCollisionGroup();
     var secondCollisionGroup = this.game.physics.p2.createCollisionGroup();
